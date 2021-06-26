@@ -18,12 +18,12 @@
     ></script>
     <script defer src="./index.js"></script>
   </head>
-  <body style="background-color: lightblue;">
+  <body style="background-color: lightblue">
     <div
       class="container"
       style="
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         flex-direction: column;
       "
@@ -45,7 +45,7 @@
             Teacher
           </button>
         </div>
-        <div class="col m-4 ">
+        <div class="col m-4">
           <button
             type="button"
             id="studentBtn"
@@ -57,6 +57,71 @@
           </button>
         </div>
       </div>
+    </div>
+    <div
+      class="container m-4 p-4"
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      "
+    >
+      <strong>Whats in this website?</strong>
+      <ul>
+        <li>Can mutiple quiz rooms at any given time</li>
+        <li>
+          Whole students records based on quiz such as correct, wrong and
+          skipped answers.
+        </li>
+      </ul>
+    </div>
+    <div
+      class="container m-4 p-4"
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      "
+    >
+      <strong> How this website is build</strong>
+      <ul>
+        <li>Frontend: HTML, CSS, JS</li>
+        <li>
+          Whole UI chnage is with help of JS methods, not with (.innerHTML)
+        </li>
+        <li>Backend: NodeJs</li>
+        <li>No database added. Once server is closed, whole data will be wiped off</li>
+        <li>For real time quizes and rooms, Socket.io is used</li>
+        <li>Backend API's:</li>
+        <ul>
+          <li>GET: BASE_URL/student/performance</li>
+          <li>POST: BASE_URL/student/join-quiz-room</li>
+          <li>GET: BASE_URL/teacher/get-question</li>
+          <li>GET: BASE_URL/teacher/performance</li>
+          <li>POST: BASE_URL/teacher/question-answered</li>
+          <li>POST: BASE_URL/teacher/question-skipped</li>
+          <li>POST: BASE_URL/teacher/create-quiz-room</li>
+        </ul>
+        <p><strong>BASE_URL: https://quiz-cp.herokuapp.com</strong></p>
+      </ul>
+    </div>
+    <div
+      class="container m-4 p-4"
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      "
+    >
+      <strong>Website is getting upgraded. Stay tuned for: </strong>
+      <ul>
+        <li>Better UI</li>
+        <li>More feature</li>
+      </ul>
+      <p>Sorry for the delay 😐</p>
     </div>
 
     <div
