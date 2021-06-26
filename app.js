@@ -11,6 +11,7 @@ const studentRoutes = require('./routes/student');
 const teacherRoutes = require('./routes/teacher');
 const questionAsked = require('./modal/questionAsked');
 
+const PORT = process.env.PORT || 5000;
 // const app = express(express.urlencoded({extended: true}));
 // const app = express(express.json());
 
@@ -25,7 +26,7 @@ app.use('/', (req, res, next) => {
   res.status(404).json({data: 'Invalid Route'})
 })
 
-app.listen(5000, () => {
+app.listen(PORT, () => {
   console.log('CONNECTED ON PORT 5000');
 })
 
