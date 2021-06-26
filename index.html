@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script defer src="./index.js"></script>
+  </head>
+  <body style="background-color: lightblue;">
+    <div
+      class="container"
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      "
+    >
+      <div class="row mt-4">
+        <h2>Lets play : Quiz</h2>
+        <div style="height: 50px"></div>
+        <h5>Login As</h5>
+      </div>
+      <div class="row">
+        <div class="col m-4">
+          <button
+            type="button"
+            id="teacherBtn"
+            class="btn btn-primary btn-lg"
+            data-bs-toggle="modal"
+            data-bs-target="#teacherModal"
+          >
+            Teacher
+          </button>
+        </div>
+        <div class="col m-4 ">
+          <button
+            type="button"
+            id="studentBtn"
+            class="btn btn-secondary btn-lg"
+            data-bs-toggle="modal"
+            data-bs-target="#studentModal"
+          >
+            Student
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="teacherModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Start a Quiz</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="teacherForm">
+              <div class="mb-3">
+                <label for="roomCode" class="form-label">Quiz Room</label>
+                <input type="text" class="form-control" id="roomCode" />
+                <div class="form-text">
+                  Quiz codes are unique, send to students whom you want to
+                  participate
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="name" class="form-label">Enter Your Name</label>
+                <input type="text" class="form-control" required id="name" />
+                <div class="form-text"></div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary" form="teacherForm">
+              Start the Quiz
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="studentModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="studentForm">
+              <div class="mb-3">
+                <label for="roomCode" class="form-label"
+                  >Enter into a Quiz Room</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="quizeCode"
+                  name="roomCode"
+                />
+                <div class="form-text">
+                  Enter the unique quiz room id provided by your teacher.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="name" class="form-label">Enter Your Name</label>
+                <input type="text" required class="form-control" id="name" />
+                <div class="form-text"></div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary" form="studentForm">
+              Enter into Quiz Room
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
