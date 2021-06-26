@@ -1,3 +1,10 @@
+const BASE_URL = `https://quiz-cp.herokuapp.com`;
+
+// const BASE_URL = `http://localhost:5000`;
+
+
+// //////////////////////////////////////////////////////////////////
+
 const questionContHTML = document.querySelector("#questionCont");
 const startQuizBtnHTML = document.querySelector("#startQuizBtn");
 const headingContHTML = document.querySelector("#headingCont");
@@ -6,7 +13,7 @@ const performanceBtnHTML = document.querySelector("#performanceBtn");
 const performanceContHTML = document.querySelector("#performanceCont");
 let performanceDisplay = false;
 
-const socket = io("http://localhost:5010");
+const socket = io(`${BASE_URL}`);
 socket.on("connection");
 
 // //////////////////////////////////////////////////////////////////////
@@ -32,7 +39,7 @@ const getQuestion = async (event, data) => {
     let fetchOptions = {
       method: "GET",
     };
-    const url = `http://localhost:5000/teacher/get-question?qindex=${data}`;
+    const url = `${BASE_URL}/teacher/get-question?qindex=${data}`;
     const resRaw = await fetch(url, fetchOptions);
     const res = await resRaw.json();
     if (res.status === "success") {
@@ -144,7 +151,7 @@ const sendQuestion = (event, question) => {
   socket.emit("ques_send", {
     ...question,
     roomCode: roomCode,
-    teacherId: 123456,
+    teacherId
   });
 };
 

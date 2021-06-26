@@ -13,6 +13,12 @@ const studentFormHTML = document.querySelector("#studentForm");
 
 // ///////////////////////////////////////////////////////////////////////
 
+const BASE_URL = `https://quiz-cp.herokuapp.com`;
+
+// const BASE_URL = `http://localhost:5000`;
+
+// ///////////////////////////////////////////////////////////////////////
+
 const submitTeacherForm = async (e) => {
   e.preventDefault();
 
@@ -31,7 +37,7 @@ const submitTeacherForm = async (e) => {
       }),
     };
     const rawRes = await fetch(
-      "http://localhost:5000/teacher/create-quiz-room", options
+      `${BASE_URL}/teacher/create-quiz-room`, options
     );
     const res = await rawRes.json();
 
@@ -65,7 +71,7 @@ const submitStudentForm = async (e) => {
         roomCode,
       }),
     };
-    const rawRes = await fetch("http://localhost:5000/student/join-quiz-room", options);
+    const rawRes = await fetch(`${BASE_URL}/student/join-quiz-room`, options);
     const res = await rawRes.json();
 
     if (!res.status) {

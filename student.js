@@ -1,4 +1,10 @@
-const socket = io("http://localhost:5010");
+const BASE_URL = `https://quiz-cp.herokuapp.com`;
+
+// const BASE_URL = `http://localhost:5000`;
+
+// //////////////////////////////////////////////////////////////////
+const socket = io(`${BASE_URL}`);
+
 const questionContHTML = document.querySelector("#questionCont");
 let QUESTION;
 
@@ -20,6 +26,7 @@ socket.on("quiz_question", (data) => {
   performanceContHTML.style.display = "none";
   displayQuestion(data);
 });
+
 // /////////////////////////////////////////////////////////////
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -133,11 +140,11 @@ const skipQuestion = async(e, data) => {
     body: JSON.stringify(d),
   };
   const rawRes = await fetch(
-    "http://localhost:5000/teacher/question-skipped",
+    `${BASE_URL}/teacher/question-skipped`,
     option
   );
   const res = await rawRes.json();
-  console.log(res);
+  // console.log(res);
   if (rawRes.status === 201) {
     alert("your input recorded");
     questionContHTML.innerHTML = "";
@@ -169,7 +176,7 @@ const answerQuestion = async (e, data) => {
     body: JSON.stringify(d),
   };
   const rawRes = await fetch(
-    "http://localhost:5000/teacher/question-answered",
+    `${BASE_URL}/teacher/question-answered`,
     option
   );
   const res = await rawRes.json();

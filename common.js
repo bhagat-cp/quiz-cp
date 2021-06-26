@@ -1,7 +1,4 @@
 
-
-// /////////////////////////////////////////////////////////////////////
-
 const fetchPerformance = async () => {
   if (performanceDisplay) {
     performanceDisplay = !performanceDisplay;
@@ -11,7 +8,7 @@ const fetchPerformance = async () => {
   }
 
   let rawRes = await fetch(
-    `http://localhost:5000/${userType}/performance?roomcode=${roomCode}`,
+    `${BASE_URL}/${userType}/performance?roomcode=${roomCode}`,
     {
       method: "GET",
     }
