@@ -21,11 +21,11 @@ app.use("/", (req, res, next) => {
   res.status(404).json({ data: "Invalid Route" });
 });
 
-app.listen(PORT, () => {
+const server =  app.listen(PORT, () => {
   console.log("CONNECTED ON PORT 5000");
 });
 
-const io = require("socket.io")(app, {
+const io = require("socket.io")(server, {
   cors: {
     origin: "*",
   },
