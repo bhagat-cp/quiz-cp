@@ -1,10 +1,10 @@
 const studentsAnswers = require("./../modal/studentsAnswers");
 const questionAsked = require("./../modal/questionAsked");
-
+const quizRooms = require("./../modal/quizRooms");
 
 const descendingOrder = (obj1, obj2) => {
-  if (obj1.score > obj2.score) return 1;
-  if (obj1.score < obj2.score) return -1;
+  if (obj1.score < obj2.score) return 1;
+  if (obj1.score > obj2.score) return -1;
   return;
 };
 
@@ -18,9 +18,9 @@ exports.performance = (req, res, next) => {
     filterData.studentId = ans.studentId;
     filterData.correctAnswers = ans.rooms[query].qAnswered.correct;
     filterData.wrongAnswers = ans.rooms[query].qAnswered.wrong;
-    filterData.qSkkiped = ans.rooms[query].qSkkiped;
+    filterData.qSkipped = ans.rooms[query].qSkipped;
     filterData.score = ans.rooms[query].score;
-    if(ans.rooms[query].score > 0) {
+    if (ans.rooms[query].score > 0) {
       filterData.totalTime = ans.rooms[query].totalTime;
     } else {
       filterData.totalTime = 0;
@@ -36,6 +36,27 @@ exports.performance = (req, res, next) => {
           return {
             studentName: r.studentName,
             timeTake: ca.timeTaken,
+            status: "Correct",
+          };
+        }
+      }
+      for (let i = 0; i < r?.wrongAnswers.length; i++) {
+        const ca = r.wrongAnswers[i];
+        if (ca.questionId === q.questionId) {
+          return {
+            studentName: r.studentName,
+            timeTake: ca.timeTaken,
+            status: "Wrong",
+          };
+        }
+      }
+      for (let i = 0; i < r?.qSkipped.length; i++) {
+        const ca = r.qSkipped[i];
+        if (ca.questionId === q.questionId) {
+          return {
+            studentName: r.studentName,
+            timeTake: ca.timeTaken,
+            status: "Skipped",
           };
         }
       }
@@ -54,4 +75,12 @@ exports.performance = (req, res, next) => {
     .json({ ranks: results, eachQuestionDetail: eachQuestionDetail });
 };
 
+exports.getParticipantsList = (req, res, next) => {
+  const query = req.query.roomCode;
 
+  for (let i = 0; i < quizRooms.length; i++) {
+    if (quizRooms[i].roomId == query) {
+      return res.status(200).json({ data: quizRooms[i] });
+    }
+  }
+};

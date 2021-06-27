@@ -5,7 +5,6 @@ const quizRooms = require("./../modal/quizRooms");
 exports.getQuestion = (req, res, next) => {
   let query = req.query.qindex;
   query = Number(query);
-  console.log(query);
   let totalQuestions = questions.length;
 
   if (query >= totalQuestions) {
@@ -16,7 +15,6 @@ exports.getQuestion = (req, res, next) => {
   }
 
   let selectedQuestion = questions[query];
-  console.log(selectedQuestion);
   return res.status(200).json({
     status: "success",
     data: {
@@ -60,7 +58,7 @@ exports.questionAnswered = (req, res, next) => {
   }
 
   if (!studentsAnsweres[studentIndex].rooms) {
-    studentsAnsweres[studentIndex].rooms = {}
+    studentsAnsweres[studentIndex].rooms = {};
   }
 
   if (!studentsAnsweres[studentIndex].rooms[roomCode]) {
@@ -69,10 +67,9 @@ exports.questionAnswered = (req, res, next) => {
     studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"] = {};
     studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"]["correct"] = [];
     studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"]["wrong"] = [];
-    studentsAnsweres[studentIndex].rooms[roomCode]["qskipped"] = []
+    studentsAnsweres[studentIndex].rooms[roomCode]["qSkipped"] = [];
     studentsAnsweres[studentIndex].rooms[roomCode].score = 0;
     studentsAnsweres[studentIndex].rooms[roomCode].totalTime = 0;
-    
   }
 
   if (correct) {
@@ -86,7 +83,6 @@ exports.questionAnswered = (req, res, next) => {
     });
     studentsAnsweres[studentIndex].rooms[roomCode].score += 1;
     studentsAnsweres[studentIndex].rooms[roomCode].totalTime += timeTaken;
-
   } else {
     studentsAnsweres[studentIndex].rooms[roomCode].qAnswered.wrong.push({
       qIndex,
@@ -96,7 +92,9 @@ exports.questionAnswered = (req, res, next) => {
     });
   }
 
-  return res.status(201).json({ status: "answer submitted", data: studentsAnsweres  });
+  return res
+    .status(201)
+    .json({ status: "answer submitted", data: studentsAnsweres });
 };
 
 exports.questionSkipped = (req, res, next) => {
@@ -125,7 +123,7 @@ exports.questionSkipped = (req, res, next) => {
   }
 
   if (!studentsAnsweres[studentIndex].rooms) {
-    studentsAnsweres[studentIndex].rooms = {}
+    studentsAnsweres[studentIndex].rooms = {};
   }
 
   if (!studentsAnsweres[studentIndex].rooms[roomCode]) {
@@ -134,21 +132,22 @@ exports.questionSkipped = (req, res, next) => {
     studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"] = {};
     studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"]["correct"] = [];
     studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"]["wrong"] = [];
-    studentsAnsweres[studentIndex].rooms[roomCode].qSkkiped = [];
+    studentsAnsweres[studentIndex].rooms[roomCode].qSkipped = [];
     studentsAnsweres[studentIndex].rooms[roomCode].score = 0;
     studentsAnsweres[studentIndex].rooms[roomCode].totalTime = 0;
   }
 
-  console.log(studentsAnsweres[studentIndex].rooms[roomCode]);
-  studentsAnsweres[studentIndex].rooms[roomCode].qSkkiped.push({
+  studentsAnsweres[studentIndex].rooms[roomCode].qSkipped.push({
     qIndex,
     questionId,
     teacherId,
     date,
   });
 
-  return res.status(201).json({ status: "input recorded", data: studentsAnsweres });
-}
+  return res
+    .status(201)
+    .json({ status: "input recorded", data: studentsAnsweres });
+};
 
 exports.createQuizRooms = (req, res, next) => {
   const quizRoom = req.body.roomCode;
@@ -166,6 +165,7 @@ exports.createQuizRooms = (req, res, next) => {
     roomId: quizRoom,
     name,
     createdAt: new Date(),
+    participants: [],
   });
 
   return res.status(201).json({

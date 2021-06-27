@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.get('/performance', commonController.performance);
 router.post('/join-quiz-room', studentController.joinQuizRoom);
+router.get('/get-participants-list', commonController.getParticipantsList);
 
 module.exports = router;

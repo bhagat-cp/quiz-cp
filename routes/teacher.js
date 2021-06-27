@@ -8,5 +8,6 @@ router.post('/question-answered', teacherController.questionAnswered);
 router.post('/question-skipped', teacherController.questionSkipped);
 router.post('/create-quiz-room', teacherController.createQuizRooms);
 router.get('/performance', commonController.performance);
+router.get('/get-participants-list', commonController.getParticipantsList);
 
 module.exports = router;

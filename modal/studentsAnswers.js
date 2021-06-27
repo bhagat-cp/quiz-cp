@@ -28,7 +28,7 @@ const studentsAnsweres = [];
 //             {},
 //           ],
 //         },
-//         qSkkiped: [
+//         qSkipped: [
 //           {
 //             qIndex: 123,
 //             questionId: 2,

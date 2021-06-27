@@ -6,7 +6,6 @@ exports.joinQuizRoom = (req, res, next) => {
 
   for (let i = 0; i < quizRooms.length; i++) {
     if (quizRooms[i].roomId === quizRoom) {
-      quizRooms[i].participants = [];
       quizRooms[i].participants.push({
         name,
         joinedAt: new Date()
@@ -23,3 +22,4 @@ exports.joinQuizRoom = (req, res, next) => {
     message: `No Room exsits with ID ${quizRoom}`,
   });
 }
+

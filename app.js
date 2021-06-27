@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const studentRoutes = require("./routes/student");
 const teacherRoutes = require("./routes/teacher");
 const questionAsked = require("./modal/questionAsked");
+const quizRooms = require('./modal/quizRooms');
 
 const PORT = process.env.PORT || 5000;
 // const app = express(express.urlencoded({extended: true}));
@@ -22,7 +23,7 @@ app.use("/", (req, res, next) => {
 });
 
 const server =  app.listen(PORT, () => {
-  console.log("CONNECTED ON PORT 5000");
+  console.log(`CONNECTED ON PORT ${PORT}`);
 });
 
 const io = require("socket.io")(server, {
@@ -32,27 +33,30 @@ const io = require("socket.io")(server, {
 });
 
 io.on("connection", (socket) => {
-  // console.log(socket);
-  console.log("user connected", socket.id);
 
   socket.on("join-room", (roomCode) => {
     socket.join(roomCode);
+    for(let i = 0; i < quizRooms.length; i++) {
+      if(quizRooms[i].roomId == roomCode) {
+        socket.to(`${roomCode}`).emit('participant-added', quizRooms[i]);
+        return
+
+      }
+    }
   });
 
   socket.on("ques_send", (data) => {
-    console.log("ques_send");
-    // console.log(data);
-    data = { ...data, sockedId: socket.id };
     const qIndex = questionAsked.indexOf(
       (q) => q.questionId === data.questionId
     );
 
     if (qIndex > -1) return;
-    questionAsked.push({
+    questionAsked.push({  
       question: data.question,
       questionId: data.questionId,
     });
 
     socket.to(data.roomCode).emit("quiz_question", data);
   });
-});
+}); 
+  
