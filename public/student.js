@@ -4,7 +4,7 @@ const BASE_URL = `https://quiz-cp.herokuapp.com`;
 
 // //////////////////////////////////////////////////////////////////
 const socket = io(`${BASE_URL}`);
-
+const headingHTML = document.querySelector("#heading");
 const questionContHTML = document.querySelector("#questionCont");
 let QUESTION;
 
@@ -24,20 +24,40 @@ socket.on("quiz_question", (data) => {
   performanceDisplay = false;
   performanceBtnHTML.innerText = "Show Performance";
   performanceContHTML.style.display = "none";
+  questionContHTML.style.display = "block";
   displayQuestion(data);
 });
 
 // /////////////////////////////////////////////////////////////
 
 const urlParams = new URLSearchParams(window.location.search);
-const studentName = urlParams.get('name');
-const roomCode = urlParams.get('roomCode');
+const studentName = urlParams.get("name");
+const roomCode = urlParams.get("roomCode");
 const studentId = Math.random();
-const userType = 'student';
-socket.emit('join-room', roomCode);
+const userType = "student";
+socket.emit("join-room", roomCode);
+
+// ////////////////////////////////////////////////////////////////
+
+const extratParticipantsList = async () => {
+  try {
+    let options = {
+      method: "GET",
+    };
+    const resRaw = await fetch(
+      `${BASE_URL}/student/get-participants-list?roomCode=${roomCode}`,
+      options
+    );
+    const res = await resRaw.json();
+    displayParticipantList(res.data);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+extratParticipantsList();
 
 // ///////////////////////////////////////////////////////////////////
-
 
 const displayQuestion = (data) => {
   questionContHTML.innerHTML = "";
@@ -108,10 +128,18 @@ const displayQuestion = (data) => {
   btnSkip.onclick = (event) => skipQuestion(event, data);
   btnAnswer.onclick = (event) => answerQuestion(event, data);
   T1 = new Date();
+
+  if (data.type === "input") {
+    const opText = document.createElement("input");
+    opText.setAttribute("type", "text");
+    opText.id = "q_input_ans";
+
+    questionUl.appendChild(opText);
+    btnAnswer.disabled = false;
+  }
 };
 
 // ////////////////////////////////////////////////////////////////////
-
 
 const answerSelected = (e, option) => {
   btnAnswer.disabled = false;
@@ -121,17 +149,18 @@ const answerSelected = (e, option) => {
 
 // ///////////////////////////////////////////////////////////////////
 
-const skipQuestion = async(e, data) => {
+const skipQuestion = async (e, data) => {
   const d = {
     studentName: studentName,
     studentId: studentId,
     qIndex: data.qIndex,
     questionId: data.questionId,
-    status: "skkiped",
+    status: "skipped",
     roomCode: data.roomCode,
     teacherId: data.teacherId,
     date: new Date(),
   };
+  console.log(d);
   let option = {
     method: "POST",
     headers: {
@@ -139,22 +168,24 @@ const skipQuestion = async(e, data) => {
     },
     body: JSON.stringify(d),
   };
-  const rawRes = await fetch(
-    `${BASE_URL}/teacher/question-skipped`,
-    option
-  );
+  const rawRes = await fetch(`${BASE_URL}/teacher/question-skipped`, option);
   const res = await rawRes.json();
   // console.log(res);
   if (rawRes.status === 201) {
     alert("your input recorded");
     questionContHTML.innerHTML = "";
   }
-  // socket.to(data.sockedId).emit('question_skkiped', d);
+  // socket.to(data.sockedId).emit('question_skipped', d);
 };
 
 // //////////////////////////////////////////////////////////////////////
 
 const answerQuestion = async (e, data) => {
+  if (data.type === "input") {
+    answer = document.querySelector('#q_input_ans').value;
+  }
+  T2 = new Date();
+
   const d = {
     studentName: studentName,
     studentId: studentId,
@@ -175,10 +206,7 @@ const answerQuestion = async (e, data) => {
     },
     body: JSON.stringify(d),
   };
-  const rawRes = await fetch(
-    `${BASE_URL}/teacher/question-answered`,
-    option
-  );
+  const rawRes = await fetch(`${BASE_URL}/teacher/question-answered`, option);
   const res = await rawRes.json();
   console.log(res);
   if (rawRes.status === 201) {
@@ -187,5 +215,3 @@ const answerQuestion = async (e, data) => {
   }
   // socket.to(data.sockedId).emit('question_answered', d);
 };
-
-

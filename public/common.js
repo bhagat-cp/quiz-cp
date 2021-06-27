@@ -1,9 +1,10 @@
-
 const fetchPerformance = async () => {
   if (performanceDisplay) {
     performanceDisplay = !performanceDisplay;
-    performanceBtnHTML.innerText = "Hide Performance";
-    performanceContHTML.style.display = "block";
+    performanceBtnHTML.innerText = "Show Performance";
+    performanceContHTML.style.display = "none";
+    questionContHTML.style.display = "block";
+    headingHTML.innerText = "Question";
     return;
   }
 
@@ -14,9 +15,13 @@ const fetchPerformance = async () => {
     }
   );
   let res = await rawRes.json();
+
   performanceDisplay = !performanceDisplay;
-  performanceBtnHTML.innerText = "Show Performance";
-  performanceContHTML.style.display = "none";
+
+  performanceBtnHTML.innerText = "Hide Performance";
+  performanceContHTML.style.display = "block";
+  questionContHTML.style.display = "none";
+  headingHTML.innerText = "Performance";
   displayPerformance(res);
 };
 
@@ -77,7 +82,7 @@ const displayPerformance = (res) => {
     btn.setAttribute("data-bs-target", `#collapse_${i}`);
     btn.setAttribute("aria-expanded", "false");
     btn.setAttribute("aria-controls", `collapse_${i}`);
-    btn.innerText = eachQ.question;
+    btn.innerText = `Question ${i} : ${eachQ.question}`;
     accordionH2.appendChild(btn);
 
     const div = document.createElement("div");
@@ -138,23 +143,33 @@ const drawMainTable = (data) => {
   mainTable.appendChild(thead);
 
   const tbody = document.createElement("tbody");
+  mainTable.appendChild(tbody);
+
+  if (data.length === 0) {
+    const tr1 = document.createElement("tr");
+    tr1.innerText = "No Participants";
+    tbody.appendChild(tr1);
+    return mainTable;
+  }
 
   for (let i = 0; i < data.length; i++) {
     const tr1 = document.createElement("tr");
     const th4 = document.createElement("th");
     th4.setAttribute("scope", "row");
-    th4.innerText = 1;
+    th4.innerText = `${i + 1}`;
     const td = document.createElement("td");
     td.innerText = data[i].studentName;
 
     let avgTime = data[i].totalTime / 1000 / data[i].score;
+
     if (data[i].totalTime == 0) {
-      avgTime = "";
+      avgTime = 0;
     }
+    avgTime.toFixed(2);
     avgTime.toString();
 
     const td1 = document.createElement("td");
-    td1.innerText = avgTime;
+    td1.innerText = `${avgTime} sec`;
     const td2 = document.createElement("td");
     td2.innerText = data[i].score;
     tr1.appendChild(th4);
@@ -164,14 +179,12 @@ const drawMainTable = (data) => {
     tbody.appendChild(tr1);
   }
 
-  mainTable.appendChild(tbody);
   return mainTable;
 };
 
 // ////////////////////////////////////////////////////////////////////
 
 const drawSubTable = (data) => {
-  console.log(data);
   const subTable = document.createElement("table");
   subTable.className = "table";
   const thead = document.createElement("thead");
@@ -188,6 +201,10 @@ const drawSubTable = (data) => {
   th2.setAttribute("scope", "col");
   th2.innerText = "Average Time";
   tr.appendChild(th2);
+  const th3 = document.createElement("th");
+  th3.setAttribute("scope", "col");
+  th3.innerText = "Status";
+  tr.appendChild(th3);
 
   thead.appendChild(tr);
   subTable.appendChild(thead);
@@ -195,7 +212,6 @@ const drawSubTable = (data) => {
   const tbody = document.createElement("tbody");
 
   for (let i = 0; i < data.length; i++) {
-    console.log(data[i]);
     if (!data[i]) continue;
     const tr1 = document.createElement("tr");
     const th4 = document.createElement("th");
@@ -205,14 +221,19 @@ const drawSubTable = (data) => {
     td.innerText = data[i].studentName;
 
     let avgTime = data[i].timeTake / 1000;
+    avgTime.toFixed(2);
     avgTime.toString();
 
     const td1 = document.createElement("td");
-    td1.innerText = avgTime;
+    td1.innerText = `${avgTime} sec`;
+
+    const td2 = document.createElement("td");
+    td2.innerText = data[i].status;
 
     tr1.appendChild(th4);
     tr1.appendChild(td);
     tr1.appendChild(td1);
+    tr1.appendChild(td2);
     tbody.appendChild(tr1);
   }
 
@@ -221,3 +242,49 @@ const drawSubTable = (data) => {
 };
 
 // ///////////////////////////////////////////////////////////////////////
+
+const leftHeadingHTML = document.querySelector("#left-heading");
+const participantsListHTML = document.querySelector("#participants-list");
+const participantsHeadingHTML = document.querySelector("#participantsHeading");
+const roomCodeHeadingHTML = document.querySelector("#roomCodeHeading");
+
+const displayParticipantList = (data) => {
+  participantsListHTML.innerHTML = "";
+  const cardDiv = document.createElement("div");
+  cardDiv.classList.add("card");
+  const cardBody = document.createElement("div");
+  cardBody.classList.add("card-body");
+  const name = document.createElement("h6");
+  const time = document.createElement("p");
+  name.innerText = `Host: ${data.name}`;
+  time.innerText = new Date(data.createdAt);
+
+  cardBody.appendChild(name);
+  cardBody.appendChild(time);
+  cardDiv.appendChild(cardBody);
+  participantsListHTML.appendChild(cardDiv);
+
+  data.participants.map((participant) => {
+    const cardDiv1 = document.createElement("div");
+    cardDiv1.classList.add("card");
+    const cardBody1 = document.createElement("div");
+    cardBody1.classList.add("card-body");
+    const name1 = document.createElement("p");
+    const time1 = document.createElement("p");
+    name1.innerText = participant.name;
+    time1.innerText = `${new Date(participant.joinedAt)}`;
+
+    cardBody1.appendChild(name1);
+    cardBody1.appendChild(time1);
+    cardDiv1.appendChild(cardBody1);
+    participantsListHTML.appendChild(cardDiv1);
+  });
+
+  const totalParticipants = data.participants.length + 1;
+  participantsHeadingHTML.innerText = `Participants - ${totalParticipants}`;
+  roomCodeHeadingHTML.innerText = `Room Code: ${data.roomId}`;
+};
+
+socket.on("participant-added", (data) => {
+  displayParticipantList(data);
+});

@@ -2,7 +2,6 @@ const BASE_URL = `https://quiz-cp.herokuapp.com`;
 
 // const BASE_URL = `http://localhost:5000`;
 
-
 // //////////////////////////////////////////////////////////////////
 
 const questionContHTML = document.querySelector("#questionCont");
@@ -28,11 +27,37 @@ socket.emit('join-room', roomCode);
 
 // ///////////////////////////////////////////////////////////////////////
 
-const getQuestion = async (event, data) => {
+const extratParticipantsList = async () => {
+  try {
+    let options = {
+      method: "GET",
+    };
+    const resRaw = await fetch(
+      `${BASE_URL}/teacher/get-participants-list?roomCode=${roomCode}`,
+      options
+    );
+    const res = await resRaw.json();
+    displayParticipantList(res.data);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+extratParticipantsList();
+
+// ///////////////////////////////////////////////////////////////////
+
+const getQuestion = async (event, data, begining = false) => {
+  if(begining) {
+
+  }
+
   if(performanceDisplay) {
     performanceDisplay = !performanceDisplay;
-    performanceBtnHTML.innerText = "Hide Performance";
-    performanceContHTML.style.display = "block";
+    performanceBtnHTML.innerText = "Show Performance";
+    performanceContHTML.style.display = "none";
+    questionContHTML.style.display = "block";
+    headingHTML.innerText = "Question"
   }
 
   try {
@@ -56,7 +81,7 @@ const getQuestion = async (event, data) => {
   }
 };
 
-startQuizBtnHTML.addEventListener("click", (e) => getQuestion(e, "0"));
+startQuizBtnHTML.addEventListener("click", (e) => getQuestion(e, "0", true));
 
 // //////////////////////////////////////////////////////////////////////
 
@@ -68,6 +93,8 @@ const displayQuestion = (res) => {
   questionColumn.classList.add("col", "m-4");
   const subjectP = document.createElement("p");
   const subjectStrong = document.createElement("strong");
+  subjectP.style.display = "flex";
+  subjectP.style.justifyContent = "flex-end";
   const questionP = document.createElement("p");
 
   questionColumn.appendChild(subjectP);
@@ -82,7 +109,7 @@ const displayQuestion = (res) => {
   subjectStrong.innerText = res.data.subject;
   subjectP.appendChild(subjectStrong);
 
-  questionP.innerText = `Question: ${res.data.question}`;
+  questionP.innerText = `Question ${res.data.qIndex + 1}: ${res.data.question}`;
 
   const questionUl = document.createElement("ul");
   if (res.data.type === "mcq") {
@@ -126,6 +153,7 @@ const displayQuestion = (res) => {
   const btnSend = document.createElement("button");
   btnSend.classList.add("btn", "btn-success");
   btnSend.innerText = "Send";
+  btnSend.id = "sendQuestionBtn";
   const nextBtnDiv = document.createElement("div");
   nextBtnDiv.classList.add("col", "m-4");
   nextBtnDiv.style.display = "grid";
@@ -153,6 +181,7 @@ const sendQuestion = (event, question) => {
     roomCode: roomCode,
     teacherId
   });
+  document.querySelector('#sendQuestionBtn').style.display = "none"
 };
 
 // ////////////////////////////////////////////////////////////////////

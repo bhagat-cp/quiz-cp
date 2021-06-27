@@ -27,38 +27,97 @@
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script defer src="./teacher.js"></script>
     <script defer src="./common.js"></script>
+
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+      main {
+        display: flex;
+        flex: 1;
+      }
+      .left {
+        padding: 0.5%;
+        border-right: 1px solid gray;
+        
+        width: 20%;
+      }
+      .participants-list {
+        display: flex;
+        height: 300px;
+        flex-wrap: wrap;
+        overflow-y: auto;
+      }
+      .card {
+        margin-bottom: 10px;
+      }
+      .right {
+        flex: 1;
+      }
+      footer {
+        background-color: black;
+        color: azure;
+        font-size: x-large;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1%;
+      }
+    </style>
   </head>
   <body>
-    <div class="container">
-      <div class="row">
-        <div class="col m-4" style="display: grid">
-          <div id="headingCont">
-            <div style="display: flex; justify-content: space-between">
-              <div>
-                <button type="button" id="startQuizBtn" class="btn btn-warning">
-                  Start Quiz
-                </button>
-                <h3 id="heading" style="display: none; justify-content: center">
-                  Question
-                </h3>
-              </div>
-              <div>
-                <button
-                  type="button"
-                  id="performanceBtn"
-                  class="btn btn-warning"
-                >
-                  Show Performance
-                </button>
+    <main>
+      <div class="left m-4">
+        <h4 id="participantsHeading"></h4>
+        <div class="my-4"></div>
+        <strong>
+          <h6 id="roomCodeHeading"> </h4>
+        </strong>
+        <div class="my-4"></div>
+        <div id="participants-list">
+          <!-- <div class="card">
+            <div class="card-body">This is some text within a card body.</div>
+          </div> -->
+        </div>
+      </div>
+      <div class="container right">
+        <div class="row">
+          <div class="col m-4" style="display: grid">
+            <div id="headingCont">
+              <div style="display: flex; justify-content: space-between">
+                <div>
+                  <button
+                    type="button"
+                    id="startQuizBtn"
+                    class="btn btn-warning"
+                  >
+                    Start Quiz
+                  </button>
+                  <h3
+                    id="heading"
+                    style="display: none; justify-content: center"
+                  >
+                    Question
+                  </h3>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    id="performanceBtn"
+                    class="btn btn-warning"
+                  >
+                    Show Performance
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="mt-6" style="border: 1px solid gray"></div>
-      <div id="questionCont">
-        <!-- <div class="row">
+        <div class="mt-4" style="border: 1px solid gray"></div>
+        <div id="questionCont">
+          <!-- <div class="row">
           <div class="col m-4" style="display: grid">
             <p>
               <strong><em>Subject Name</em> </strong>
@@ -76,7 +135,7 @@
             </ul>
           </div> 
         </div>-->
-        <!-- <div class="row">
+          <!-- <div class="row">
           <div class="col m-4" style="display: grid">
             <button type="button" id="startQuizBtn" class="btn btn-danger">
               Next
@@ -88,12 +147,11 @@
             </button>
           </div>
         </div> -->
-      </div>
-      <div class="m-10" style="border: 1px solid gray"></div>
-      <div class="m-10" ></div>
+        </div>
+        <div class="m-10"></div>
 
-      <div id="performanceCont">
-        <!-- <table class="table">
+        <div id="performanceCont">
+          <!-- <table class="table">
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -149,7 +207,11 @@
             </div>
           </div>
         </div> -->
+        </div>
       </div>
-    </div>
+    </main>
+    <footer>
+      <p>@Classplus Quiz</p>
+    </footer>
   </body>
 </html>
