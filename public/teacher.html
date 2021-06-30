@@ -16,6 +16,14 @@
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="teacher.css" />
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"
       integrity="sha512-iZIBSs+gDyTH0ZhUem9eQ1t4DcEn2B9lHxfRMeGQhyNdSUz+rb+5A3ummX6DQTOIs1XK0gOteOg/LPtSo9VJ+w=="
@@ -24,194 +32,93 @@
     ></script>
     <div id="demo"></div>
 
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <!-- <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> -->
     <script defer src="./teacher.js"></script>
     <script defer src="./common.js"></script>
-
-    <style>
-      body {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-      }
-      main {
-        display: flex;
-        flex: 1;
-      }
-      .left {
-        padding: 0.5%;
-        border-right: 1px solid gray;
-        
-        width: 20%;
-      }
-      .participants-list {
-        display: flex;
-        height: 300px;
-        flex-wrap: wrap;
-        overflow-y: auto;
-      }
-      .card {
-        margin-bottom: 10px;
-      }
-      .right {
-        flex: 1;
-      }
-      footer {
-        background-color: black;
-        color: azure;
-        font-size: x-large;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 1%;
-      }
-    </style>
   </head>
   <body>
-    <main>
-      <div class="left m-4">
-        <h4 id="participantsHeading"></h4>
-        <div class="my-4"></div>
-        <strong>
-          <h6 id="roomCodeHeading"> </h4>
-        </strong>
-        <div class="my-4"></div>
-        <div id="participants-list">
-          <!-- <div class="card">
-            <div class="card-body">This is some text within a card body.</div>
-          </div> -->
-        </div>
-      </div>
-      <div class="container right">
-        <div class="row">
-          <div class="col m-4" style="display: grid">
-            <div id="headingCont">
-              <div style="display: flex; justify-content: space-between">
-                <div>
-                  <button
-                    type="button"
-                    id="startQuizBtn"
-                    class="btn btn-warning"
-                  >
-                    Start Quiz
-                  </button>
-                  <h3
-                    id="heading"
-                    style="display: none; justify-content: center"
-                  >
-                    Question
-                  </h3>
-                </div>
-                <div>
-                  <button
-                    type="button"
-                    id="performanceBtn"
-                    class="btn btn-warning"
-                  >
-                    Show Performance
-                  </button>
-                </div>
-              </div>
+    <div class="main">
+      <div class="video"></div>
+      <div class="chat">
+        <div class="chat-toolbar">
+          <div class="chat-toolbar-option">
+            <div class="toolbar-option-icon">
+              <i class="far fa-comments"></i>
+            </div>
+            <div class="toolbar-option-name">Chat</div>
+          </div>
+          <div class="chat-toolbar-option">
+            <div class="toolbar-option-icon">
+              <i class="fas fa-user-friends"></i>
+            </div>
+            <div class="toolbar-option-name">Room</div>
+          </div>
+          <div class="chat-toolbar-option">
+            <div class="toolbar-option-icon">
+              <i class="fas fa-cog"></i>
+            </div>
+            <div class="toolbar-option-name">Settings</div>
+          </div>
+          <div class="chat-toolbar-option toolbar-option-active">
+            <div class="toolbar-option-icon">
+              <i class="far fa-edit"></i>
+            </div>
+            <div class="toolbar-option-name">Quiz</div>
+          </div>
+          <div class="chat-toolbar-option">
+            <div class="toolbar-option-icon close-icon">
+              <i class="fas fa-times"></i>
             </div>
           </div>
         </div>
-        <div class="mt-4" style="border: 1px solid gray"></div>
-        <div id="questionCont">
-          <!-- <div class="row">
-          <div class="col m-4" style="display: grid">
-            <p>
-              <strong><em>Subject Name</em> </strong>
-            </p>
-            <p>Question:</p>
-
-            <ul>
-              <li class="btn btn-outline-dark m-1">options a</li>
-              <br />
-              <li class="btn btn-outline-dark m-1" >options a</li>
-              <br />
-              <li class="btn btn-outline-dark m-1">options a</li>
-              <br />
-              <li class="btn btn-outline-dark m-1">options a</li>
-            </ul>
-          </div> 
-        </div>-->
-          <!-- <div class="row">
-          <div class="col m-4" style="display: grid">
-            <button type="button" id="startQuizBtn" class="btn btn-danger">
-              Next
-            </button>
-          </div>
-          <div class="col m-4" style="display: grid">
-            <button type="button" id="startQuizBtn" class="btn btn-success">
-              Send
-            </button>
-          </div>
-        </div> -->
-        </div>
-        <div class="m-10"></div>
-
-        <div id="performanceCont">
-          <!-- <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">First</th>
-              <th scope="col">Last</th>
-              <th scope="col">Handle</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="accordion" id="accordionPerformance">
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-              <button
-                class="accordion-button"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseOne"
-                aria-expanded="true"
-                aria-controls="collapseOne"
-              >
-                Accordion Item #1
-              </button>
-            </h2>
-            <div
-              id="collapseOne"
-              class="accordion-collapse collapse show"
-              aria-labelledby="headingOne"
-              data-bs-parent="#accordionPerformance"
-            >
-              <div class="accordion-body">
-
+        <div class="chat-body">
+          <div class="message-holder-other">
+            <div class="whole-message">
+              <div class="message-other-icon">
+                <img src="./assets/user-regular.svg" />
+              </div>
+              <div class="message msg-teacher">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Laboriosam eos ab modi, dolorum maiores rem ipsum nostrum
+                  quasi consequuntur distinctio assumenda quod architecto dolor
+                  ad. In assumenda a unde similique!
+                </p>
+                <p class="message-time"><small> 12:01 PM</small></p>
               </div>
             </div>
           </div>
-        </div> -->
+
+          <div class="message-holder-you">
+            <div class="whole-message">
+            <div class="message msg-student">
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Laboriosam eos ab modi, dolorum maiores rem ipsum nostrum quasi
+                consequuntur distinctio assumenda quod architecto dolor ad. In
+                assumenda a unde similique!
+              </p>
+              <p class="message-time"><small> 12:01 PM</small></p>
+            </div>
+          </div>
+          </div>
+        </div>
+        <div class="chat-send">
+          <div class="chat-send-attachment">
+            <i class="fas fa-paperclip"></i>
+          </div>
+          <div class="chat-send-body">
+            <input
+              type="text"
+              id="chat-send-input"
+              placeholder="Write something here ..."
+            />
+          </div>
+          <div class="chat-send-btn">
+            <i class="far fa-paper-plane"></i>
+          </div>
         </div>
       </div>
-    </main>
-    <footer>
-      <p>@Classplus Quiz</p>
-    </footer>
+    </div>
   </body>
 </html>

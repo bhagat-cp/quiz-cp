@@ -1,0 +1,191 @@
+html {
+  --blue-color: rgb(73, 199, 237);
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  margin: 0px;
+  padding: 0;
+  /* border: 3px solid red; */
+  height: 100vh;
+  width: 100%;
+}
+
+.main {
+  height: 100%; 
+  width: 100%;
+  margin: 0;
+  display: flex;
+}
+
+.video {
+  height: 100%; 
+
+  width: 70%;
+  background-image: url("./assets/video-player.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.chat {
+  height: 100%; 
+  width: 30%;
+  display: flex;
+  flex-direction: column; 
+}
+
+.chat-toolbar {
+  display: flex;
+  width: 100%;
+  padding-top: 2%;
+}
+
+.chat-toolbar-option {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  color: gray;
+  cursor: pointer;
+  justify-content: center;
+}
+
+.toolbar-option-icon {
+  /* padding-bottom: 8px; */
+}
+
+
+.toolbar-option-icon i {
+  font-size: 1.2em;
+}
+
+.close-icon {
+  font-size: 1.5em;
+}
+
+.toolbar-option-active {
+  color: var(--blue-color);
+  border-bottom: 3px solid var(--blue-color);
+}
+
+.toolbar-option-name {
+  padding-bottom: 5px;
+}
+
+.chat-body {
+  flex: 1;
+  padding-left: 1%;
+  padding-right: 1%;
+  padding-bottom: 1%;
+  padding-top: 1%;
+  background-color: rgb(245, 240, 240);
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-send {
+  display: flex;
+  border-top: 1px solid gray;
+  width: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+.chat-send-body {
+  flex: 1;
+
+}
+
+#chat-send-input {
+  margin: 0;
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+#chat-send-input:focus {
+  border: none;
+}
+
+.chat-send-attachment {
+  font-size: 1.2em;
+  padding-right: 5%;
+  color: gray;
+  cursor: pointer;
+}
+
+.chat-send-btn {
+  font-size: 1.2em;
+  padding-left: 5%;
+  color: var(--blue-color);
+  cursor: pointer;
+}
+
+.message {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  padding: 1%;
+  position: relative;
+  /* max-width: 80%; */
+  color: white;
+  /* margin-bottom: 5px; */
+}
+
+.message-time {
+  position: absolute;
+  bottom: -15px;
+  right: 5px;
+}
+
+.msg-teacher {
+  background-color: var(--blue-color);
+}
+
+.msg-student {
+  background-color: gray;
+}
+
+.message-holder-you {
+  width: 100%;
+  display: flex;
+  /* align-items: flex-end; */
+  justify-content: flex-end;
+}
+
+.message-holder-other {
+  width: 100%;
+  display: flex;
+  /* align-items: flex-end; */
+  justify-content: flex-start;
+}
+
+.message-other-icon {
+  width: 100%;
+  margin-right: 10px;
+  margin-top: 3px;
+  /* display: flex; */
+  display: flex;
+  justify-content: center;
+  
+}
+
+.message-other-icon img {
+  color: white;
+  background-color: rgb(201, 200, 200);
+  border-radius: 50%;
+  padding: 10%;
+  height: 40px;
+}
+
+.whole-message {
+  max-width: 80%;
+  display: flex;
+  margin-bottom: 10px;
+}
