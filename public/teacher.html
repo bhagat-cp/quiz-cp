@@ -23,14 +23,13 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link rel="stylesheet" href="teacher.css" />
+    <link rel="stylesheet" href="styles.css" />
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"
       integrity="sha512-iZIBSs+gDyTH0ZhUem9eQ1t4DcEn2B9lHxfRMeGQhyNdSUz+rb+5A3ummX6DQTOIs1XK0gOteOg/LPtSo9VJ+w=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <div id="demo"></div>
 
     <!-- <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> -->
     <script defer src="./teacher.js"></script>
@@ -59,7 +58,7 @@
             </div>
             <div class="toolbar-option-name">Settings</div>
           </div>
-          <div class="chat-toolbar-option toolbar-option-active">
+          <div class="chat-toolbar-option toolbar-option-active active">
             <div class="toolbar-option-icon">
               <i class="far fa-edit"></i>
             </div>
@@ -72,50 +71,219 @@
           </div>
         </div>
         <div class="chat-body">
-          <div class="message-holder-other">
-            <div class="whole-message">
-              <div class="message-other-icon">
-                <img src="./assets/user-regular.svg" />
+          <div class="chat-body-default hide">
+            <div class="message-holder-other">
+              <div class="whole-message">
+                <div class="message-other-icon">
+                  <img src="./assets/user-regular.svg" />
+                </div>
+                <div class="message msg-teacher">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Laboriosam eos ab modi, dolorum maiores rem ipsum nostrum
+                    quasi consequuntur distinctio assumenda quod architecto
+                    dolor ad. In assumenda a unde similique!
+                  </p>
+                  <p class="message-time"><small> 12:01 PM</small></p>
+                </div>
               </div>
-              <div class="message msg-teacher">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Laboriosam eos ab modi, dolorum maiores rem ipsum nostrum
-                  quasi consequuntur distinctio assumenda quod architecto dolor
-                  ad. In assumenda a unde similique!
-                </p>
-                <p class="message-time"><small> 12:01 PM</small></p>
+            </div>
+
+            <div class="message-holder-you">
+              <div class="whole-message">
+                <div class="message msg-student">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Laboriosam eos ab modi, dolorum maiores rem ipsum nostrum
+                    quasi consequuntur distinctio assumenda quod architecto
+                    dolor ad. In assumenda a unde similique!
+                  </p>
+                  <p class="message-time"><small> 12:01 PM</small></p>
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="message-holder-you">
-            <div class="whole-message">
-            <div class="message msg-student">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Laboriosam eos ab modi, dolorum maiores rem ipsum nostrum quasi
-                consequuntur distinctio assumenda quod architecto dolor ad. In
-                assumenda a unde similique!
-              </p>
-              <p class="message-time"><small> 12:01 PM</small></p>
+          <div class="chat-quiz-teacher hide">
+            <div class="teacher-question-mcq">
+              <div class="question-header">
+                <div class="question-header-number">
+                  Question 1<small>/2</small>
+                </div>
+                <div class="question-header-subject">Math</div>
+              </div>
+              <div class="question-info">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Cupiditate dicta maxime nobis magni facilis itaque, unde eveniet
+                suscipit nihil pariatur natus quae nostrum modi est aut, ipsum
+                distinctio tempora perspiciatis.
+              </div>
+              <div class="question-options">
+                <div class="question-option">
+                  <div class="question-option-info">7, 8 & 9</div>
+                  <div class="question-option-correct"></div>
+                </div>
+                <div class="question-option">
+                  <div class="question-option-info">7, 8 & 9</div>
+                  <div class="question-option-correct">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                </div>
+                <div class="question-option">
+                  <div class="question-option-info">7, 8 & 9</div>
+                  <div class="question-option-correct"></div>
+                </div>
+                <div class="question-option">
+                  <div class="question-option-info">7, 8 & 9</div>
+                  <div class="question-option-correct"></div>
+                </div>
+              </div>
+              <div class="question-actions">
+                <button class="question-action-btn">Next</button>
+                <button class="question-action-btn">Send</button>
+              </div>
             </div>
           </div>
+
+          <div class="leaderboard-teacher">
+            <div class="main-leaderbaord">
+              <div class="main-leaderboard-heading">Leaderboard</div>
+              <div class="main-leaderboard-table">
+                <table class="table main-leaderboard-table ">
+                  <thead class="leaderboard-table-header">
+                    <tr class="table-row-margin">
+                      <th class="table-col-padding">Rank</th>
+                      <th class="table-col-padding">Name</th>
+                      <th class="table-col-padding">Avg Time</th>
+                      <th class="table-col-padding">Correct Answeres</th>
+                    </tr>
+                  </thead>
+                  <tbody class="leaderboard-table-body">
+                    <tr class="table-row-margin">
+                      <td class="table-col-padding">1</td>
+                      <td class="table-col-padding leaderboard-table-name">
+                        <i class="fas fa-award"></i> Vishal
+                      </td>
+                      <td class="table-col-padding">9</td>
+                      <td class="table-col-padding">2</td>
+                    </tr>
+                    <tr class="table-row-margin">
+                      <td class="table-col-padding">1</td>
+                      <td class="table-col-padding leaderboard-table-name">
+                        <i class="fas fa-award"></i> Vishal
+                      </td>
+                      <td class="table-col-padding">9</td>
+                      <td class="table-col-padding">2</td>
+                    </tr>
+                    <tr class="table-row-margin">
+                      <td class="table-col-padding">1</td>
+                      <td class="table-col-padding leaderboard-table-name">
+                        <i class="fas fa-award"></i> Vishal
+                      </td>
+                      <td class="table-col-padding">9</td>
+                      <td class="table-col-padding">2</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="question-list">
+              <div class="each-question-container">
+                <div class="each-question-active each-question">
+                  <div class="each-question-header">
+                    <div class="each-question-heading">
+                      <strong>Question 1</strong>
+                    </div>
+                    <div class="each-question-subject">Math</div>
+                  </div>
+                  <div class="each-question-label">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Sequi fuga et quos. Neque perspiciatis dolor voluptatum amet
+                    illo doloribus laboriosam soluta eos et dolorum. Veritatis
+                    voluptatum aperiam accusantium aspernatur aliquam!
+                  </div>
+                </div>
+                <div class="each-question-body">
+                  <div class="question-body-chart"></div>
+                  <div class="body-table-container">
+                    <table class="question-body-table table">
+                      <thead>
+                        <tr>
+                          <th class="table-col-padding">Rank</th>
+                          <th class="table-col-padding">Name</th>
+                          <th class="table-col-padding">Avg Time (Sec)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="table-col-padding">1</td>
+                          <td class="table-col-padding">
+                            <i class="fas fa-award"></i> Vishal
+                          </td>
+                          <td class="table-col-padding">10</td>
+                        </tr>
+                        <tr>
+                          <td class="table-col-padding">1</td>
+                          <td class="table-col-padding">
+                            <i class="fas fa-award"></i> Vishal
+                          </td>
+                          <td class="table-col-padding">10</td>
+                        </tr>
+                        <tr>
+                          <td class="table-col-padding">1</td>
+                          <td class="table-col-padding">
+                            <i class="fas fa-award"></i> Vishal
+                          </td>
+                          <td class="table-col-padding">10</td>
+                        </tr>
+                        <tr>
+                          <td class="table-col-padding">1</td>
+                          <td class="table-col-padding">
+                            <i class="fas fa-award"></i> Vishal
+                          </td>
+                          <td class="table-col-padding">10</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="chat-send">
-          <div class="chat-send-attachment">
-            <i class="fas fa-paperclip"></i>
+          <div class="chat-send-container hide">
+            <div class="chat-send-default">
+              <div class="chat-send-attachment">
+                <i class="fas fa-paperclip"></i>
+              </div>
+              <div class="chat-send-body">
+                <input
+                  type="text"
+                  id="chat-send-input"
+                  placeholder="Write something here ..."
+                />
+              </div>
+              <div class="chat-send-btn">
+                <i class="far fa-paper-plane"></i>
+              </div>
+            </div>
           </div>
-          <div class="chat-send-body">
-            <input
-              type="text"
-              id="chat-send-input"
-              placeholder="Write something here ..."
-            />
-          </div>
-          <div class="chat-send-btn">
-            <i class="far fa-paper-plane"></i>
+          <div class="chat-send-container">
+            <div class="send-question-teacher">
+              <div class="question-teacher-option active">
+                <div class="option-icon">
+                  <i class="fas fa-list"></i>
+                </div>
+                <div class="option-label">Questions</div>
+              </div>
+              <div class="question-teacher-option">
+                <div class="option-icon">
+                  <i class="fas fa-medal"></i>
+                </div>
+                <div class="option-label">Leaderboard</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

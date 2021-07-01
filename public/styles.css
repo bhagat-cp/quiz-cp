@@ -1,0 +1,382 @@
+html {
+  --blue-color: rgb(73, 199, 237);
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  margin: 0px;
+  padding: 0;
+  /* border: 3px solid red; */
+  height: 100vh;
+  width: 100%;
+}
+
+.hide {
+  display: none;
+}
+
+.active {
+  color: var(--blue-color);
+}
+
+.main {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  display: flex;
+}
+
+.video {
+  height: 100%;
+  border-right: 1px solid var(--blue-color);
+  width: 70%;
+  background-image: url("./assets/video-player.jpg");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.chat {
+  height: 100%;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* /////////////////////////////////////////////////////////////////////////// */
+
+.chat-toolbar {
+  display: flex;
+  width: 100%;
+  padding-top: 2%;
+}
+
+.chat-toolbar-option {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  color: gray;
+  cursor: pointer;
+  justify-content: center;
+}
+
+.toolbar-option-icon {
+  /* padding-bottom: 8px; */
+}
+
+.toolbar-option-icon i {
+  font-size: 1.2em;
+}
+
+.close-icon {
+  font-size: 1.5em;
+}
+
+.toolbar-option-active {
+  border-bottom: 3px solid var(--blue-color);
+}
+
+.toolbar-option-name {
+  padding-bottom: 5px;
+}
+
+/* ////////////////////////////////////////////////////////////////////////// */
+
+.chat-send {
+  width: 100%;
+}
+
+.chat-send-container {
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  border-top: 3px solid rgb(192, 190, 190);
+}
+
+.chat-send-default {
+  display: flex;
+}
+
+.chat-send-body {
+  flex: 1;
+}
+
+#chat-send-input {
+  margin: 0;
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+#chat-send-input:focus {
+  border: none;
+}
+
+.chat-send-attachment {
+  font-size: 1.2em;
+  padding-right: 5%;
+  color: gray;
+  cursor: pointer;
+}
+
+.chat-send-btn {
+  font-size: 1.2em;
+  padding-left: 5%;
+  color: var(--blue-color);
+  cursor: pointer;
+}
+
+.send-question-teacher {
+  display: flex;
+  color: gray;
+}
+
+.question-teacher-option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* ///////////////////////////////////////////////////////////////// */
+
+.chat-body {
+  flex: 1;
+  /* padding-left: 1%;
+  padding-right: 1%;
+  padding-bottom: 1%;
+  padding-top: 1%; */
+  background-color: rgb(245, 240, 240);
+  overflow-y: auto;
+  /* display: flex;
+  flex-direction: column; */
+}
+
+.message {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  padding: 1%;
+  position: relative;
+  /* max-width: 80%; */
+  color: white;
+  /* margin-bottom: 5px; */
+}
+
+.message-time {
+  position: absolute;
+  bottom: -15px;
+  right: 5px;
+}
+
+.msg-teacher {
+  background-color: var(--blue-color);
+}
+
+.msg-student {
+  background-color: gray;
+}
+
+.message-holder-you {
+  width: 100%;
+  display: flex;
+  /* align-items: flex-end; */
+  justify-content: flex-end;
+}
+
+.message-holder-other {
+  width: 100%;
+  display: flex;
+  /* align-items: flex-end; */
+  justify-content: flex-start;
+}
+
+.message-other-icon {
+  width: 100%;
+  margin-right: 10px;
+  margin-top: 3px;
+  /* display: flex; */
+  display: flex;
+  justify-content: center;
+}
+
+.message-other-icon img {
+  color: white;
+  background-color: rgb(201, 200, 200);
+  border-radius: 50%;
+  padding: 10%;
+  height: 40px;
+}
+
+.whole-message {
+  max-width: 80%;
+  display: flex;
+  margin-bottom: 10px;
+}
+
+/* ///////////////////////////////////////////////// */
+
+.chat-quiz-teacher {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.teacher-question-mcq {
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3%;
+}
+
+.question-header-number {
+  color: gray;
+}
+
+.question-header-subject {
+  color: var(--blue-color);
+}
+
+.question-info {
+  margin-bottom: 3%;
+}
+
+.question-options {
+  margin-bottom: 10%;
+}
+
+.question-option {
+  display: flex;
+  margin-bottom: 2%;
+}
+
+.question-option-info {
+  background-color: var(--blue-color);
+  color: white;
+  padding: 1% 5%;
+  border-top-left-radius: 5%;
+  border-top-right-radius: 5%;
+  border-bottom-left-radius: 5%;
+  border-bottom-right-radius: 5%;
+  margin-right: 5%;
+}
+
+.question-option-correct {
+  display: flex;
+  align-items: center;
+}
+
+.question-option-correct i {
+  color: green;
+  font-size: 1.4em;
+}
+
+.question-actions {
+  display: flex;
+  justify-content: space-around;
+}
+
+.question-action-btn {
+  color: var(--blue-color);
+  border-top-left-radius: 10%;
+  border-top-right-radius: 10%;
+  border-bottom-left-radius: 10%;
+  border-bottom-right-radius: 10%;
+  border: 2px solid var(--blue-color);
+  min-width: max-content;
+  min-width: 30%;
+}
+
+/* //////////////////////////////////////////////////////// */
+
+.main-leaderbaord {
+  background-color: var(--blue-color);
+  color: white;
+  padding: 2% 1% 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-leaderboard-heading {
+  font-size: 1.2em;
+  margin-bottom: 3%;
+}
+
+.main-leaderboard-table {
+  width: 100%;
+  border-spacing: 0 1em;
+  border-collapse: separate;
+  color: white;
+}
+
+.main-leaderboard-table tbody tr {
+  background-color: rgb(87, 169, 194);
+}
+
+.table-col-padding {
+  padding-left: 1.5%;
+  padding-right: 2.5%;
+}
+
+.leaderboard-table-name {
+  color: orange;
+}
+
+.table-row-margin {
+  /* margin-bottom: 30px; */
+}
+
+.each-question-container {
+  border-bottom: 2px solid gray;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+}
+
+.each-question {
+  padding: 2% 3% 3% 5%;
+}
+
+.each-question-header {
+  display: flex;
+  justify-content: space-between;
+  
+}
+
+.each-question-heading {
+  color: gray;
+}
+
+.each-question-subject {
+  color: var(--blue-color);
+}
+
+.body-table-container {
+  padding: 2% 3%;
+
+}
+
+.question-body-table {
+  width: 100%;
+  flex: 1;
+}
+
+.question-body-table  thead {
+  color: gray;
+}
+
+.each-question-active {
+  background-color: var(--blue-color);
+  color: white;
+}
+
