@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Teacher</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -16,217 +16,303 @@
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
-    <script defer src="./index.js"></script>
-  </head>
-  <body style="background-color: lightblue">
-    <div
-      class="container"
-      style="
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-direction: column;
-      "
-    >
-      <div class="row mt-4">
-        <h2>Lets play : Quiz</h2>
-        <div style="height: 50px"></div>
-        <h5>Login As</h5>
-      </div>
-      <div class="row">
-        <div class="col m-4">
-          <button
-            type="button"
-            id="teacherBtn"
-            class="btn btn-primary btn-lg"
-            data-bs-toggle="modal"
-            data-bs-target="#teacherModal"
-          >
-            Teacher
-          </button>
-        </div>
-        <div class="col m-4">
-          <button
-            type="button"
-            id="studentBtn"
-            class="btn btn-secondary btn-lg"
-            data-bs-toggle="modal"
-            data-bs-target="#studentModal"
-          >
-            Student
-          </button>
-        </div>
-      </div>
-    </div>
-    <div
-      class="container m-4 p-4"
-      style="
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-      "
-    >
-      <strong>Whats in this website?</strong>
-      <ul>
-        <li>Can mutiple quiz rooms at any given time</li>
-        <li>
-          Whole students records based on quiz such as correct, wrong and
-          skipped answers.
-        </li>
-      </ul>
-    </div>
-    <div
-      class="container m-4 p-4"
-      style="
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-      "
-    >
-      <strong> How this website is build</strong>
-      <ul>
-        <li>Frontend: HTML, CSS, JS</li>
-        <li>
-          Whole UI chnage is with help of JS methods, not with (.innerHTML)
-        </li>
-        <li>Backend: NodeJs</li>
-        <li>No database added. Once server is closed, whole data will be wiped off</li>
-        <li>For real time quizzes and rooms, Socket.io is used</li>
-        <li>Backend API's:</li>
-        <ul>
-          <li>GET: BASE_URL/student/performance</li>
-          <li>POST: BASE_URL/student/join-quiz-room</li>
-          <li>GET: BASE_URL/teacher/get-question</li>
-          <li>GET: BASE_URL/teacher/performance</li>
-          <li>POST: BASE_URL/teacher/question-answered</li>
-          <li>POST: BASE_URL/teacher/question-skipped</li>
-          <li>POST: BASE_URL/teacher/create-quiz-room</li>
-        </ul>
-        <p><strong>BASE_URL: https://quiz-cp.herokuapp.com</strong></p>
-      </ul>
-    </div>
-    <div
-      class="container m-4 p-4"
-      style="
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-      "
-    >
-      <strong>Website is getting upgraded. Stay tuned for: </strong>
-      <ul>
-        <li>Better UI</li>
-        <li>More feature</li>
-      </ul>
-      <p>Sorry for the delay 😐</p>
-    </div>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"
+      integrity="sha512-iZIBSs+gDyTH0ZhUem9eQ1t4DcEn2B9lHxfRMeGQhyNdSUz+rb+5A3ummX6DQTOIs1XK0gOteOg/LPtSo9VJ+w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
 
-    <div
-      class="modal fade"
-      id="teacherModal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Start a Quiz</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+    <!-- <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> -->
+    <script defer src="./teacher.js"></script>
+    <script defer src="./common.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="video"></div>
+      <div class="chat">
+        <div class="chat-toolbar">
+          <div class="chat-toolbar-option">
+            <div class="toolbar-option-icon">
+              <i class="far fa-comments"></i>
+            </div>
+            <div class="toolbar-option-name">Chat</div>
           </div>
-          <div class="modal-body">
-            <form id="teacherForm">
-              <div class="mb-3">
-                <label for="roomCode" class="form-label">Quiz Room</label>
-                <input type="text" class="form-control" id="roomCode" />
-                <div class="form-text">
-                  Quiz codes are unique, send to students whom you want to
-                  participate
+          <div class="chat-toolbar-option">
+            <div class="toolbar-option-icon">
+              <i class="fas fa-user-friends"></i>
+            </div>
+            <div class="toolbar-option-name">Room</div>
+          </div>
+          <div class="chat-toolbar-option">
+            <div class="toolbar-option-icon">
+              <i class="fas fa-cog"></i>
+            </div>
+            <div class="toolbar-option-name">Settings</div>
+          </div>
+          <div class="chat-toolbar-option toolbar-option-active active">
+            <div class="toolbar-option-icon">
+              <i class="far fa-edit"></i>
+            </div>
+            <div class="toolbar-option-name">Quiz</div>
+          </div>
+          <div class="chat-toolbar-option">
+            <div class="toolbar-option-icon close-icon">
+              <i class="fas fa-times"></i>
+            </div>
+          </div>
+        </div>
+        <div class="chat-body">
+          <div class="chat-body-default hide">
+            <div class="message-holder-other">
+              <div class="whole-message">
+                <div class="message-other-icon">
+                  <img src="./assets/user-regular.svg" />
+                </div>
+                <div class="message msg-teacher">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Laboriosam eos ab modi, dolorum maiores rem ipsum nostrum
+                    quasi consequuntur distinctio assumenda quod architecto
+                    dolor ad. In assumenda a unde similique!
+                  </p>
+                  <p class="message-time"><small> 12:01 PM</small></p>
                 </div>
               </div>
-              <div class="mb-3">
-                <label for="name" class="form-label">Enter Your Name</label>
-                <input type="text" class="form-control" required id="name" />
-                <div class="form-text"></div>
+            </div>
+
+            <div class="message-holder-you">
+              <div class="whole-message">
+                <div class="message msg-student">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Laboriosam eos ab modi, dolorum maiores rem ipsum nostrum
+                    quasi consequuntur distinctio assumenda quod architecto
+                    dolor ad. In assumenda a unde similique!
+                  </p>
+                  <p class="message-time"><small> 12:01 PM</small></p>
+                </div>
               </div>
-            </form>
+            </div>
           </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="submit" class="btn btn-primary" form="teacherForm">
-              Start the Quiz
-            </button>
+
+          <div class="chat-quiz-teacher">
+            <div class="teacher-question-mcq hide">
+              <div class="question-header">
+                <div class="question-header-number">
+                  Question 1<small>/2</small>
+                </div>
+                <div class="question-header-subject">Math</div>
+              </div>
+              <div class="question-info">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Cupiditate dicta maxime nobis magni facilis itaque, unde eveniet
+                suscipit nihil pariatur natus quae nostrum modi est aut, ipsum
+                distinctio tempora perspiciatis.
+              </div>
+              <div class="question-options">
+                <div class="question-option">
+                  <div class="question-option-info">7, 8 & 9</div>
+                  <div class="question-option-correct"></div>
+                </div>
+                <div class="question-option">
+                  <div class="question-option-info">7, 8 & 9</div>
+                  <div class="question-option-correct">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                </div>
+                <div class="question-option">
+                  <div class="question-option-info">7, 8 & 9</div>
+                  <div class="question-option-correct"></div>
+                </div>
+                <div class="question-option">
+                  <div class="question-option-info">7, 8 & 9</div>
+                  <div class="question-option-correct"></div>
+                </div>
+              </div>
+              <div class="question-actions">
+                <button class="question-action-btn">Next</button>
+                <button class="question-action-btn">Send</button>
+              </div>
+            </div>
+
+            <div class="teacher-question-text">
+              <div class="question-header">
+                <div class="question-header-number">
+                  Question 1<small>/2</small>
+                </div>
+                <div class="question-header-subject">Math</div>
+              </div>
+              <div class="question-info">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Cupiditate dicta maxime nobis magni facilis itaque, unde eveniet
+                suscipit nihil pariatur natus quae nostrum modi est aut, ipsum
+                distinctio tempora perspiciatis.
+              </div>
+
+              <div class="question-note">
+                <p>
+                  <strong>Note : </strong>
+                  <span class="text-red"
+                    >This is an open ended questionwhere participants can type
+                    their own answers
+                  </span>
+                </p>
+              </div>
+              <div class="question-actions">
+                <button class="question-action-btn">Next</button>
+                <button class="question-action-btn">Send</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="leaderboard-teacher hide">
+            <div class="main-leaderbaord">
+              <div class="main-leaderboard-heading">Leaderboard</div>
+              <div class="main-leaderboard-table">
+                <table class="table main-leaderboard-table">
+                  <thead class="leaderboard-table-header">
+                    <tr class="table-row-margin">
+                      <th class="table-col-padding">Rank</th>
+                      <th class="table-col-padding">Name</th>
+                      <th class="table-col-padding">Avg Time</th>
+                      <th class="table-col-padding">Correct Answeres</th>
+                    </tr>
+                  </thead>
+                  <tbody class="leaderboard-table-body">
+                    <tr class="table-row-margin">
+                      <td class="table-col-padding">1</td>
+                      <td class="table-col-padding leaderboard-table-name">
+                        <i class="fas fa-award"></i> Vishal
+                      </td>
+                      <td class="table-col-padding">9</td>
+                      <td class="table-col-padding">2</td>
+                    </tr>
+                    <tr class="table-row-margin">
+                      <td class="table-col-padding">1</td>
+                      <td class="table-col-padding leaderboard-table-name">
+                        <i class="fas fa-award"></i> Vishal
+                      </td>
+                      <td class="table-col-padding">9</td>
+                      <td class="table-col-padding">2</td>
+                    </tr>
+                    <tr class="table-row-margin">
+                      <td class="table-col-padding">1</td>
+                      <td class="table-col-padding leaderboard-table-name">
+                        <i class="fas fa-award"></i> Vishal
+                      </td>
+                      <td class="table-col-padding">9</td>
+                      <td class="table-col-padding">2</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="question-list">
+              <div class="each-question-container">
+                <div class="each-question-active each-question">
+                  <div class="each-question-header">
+                    <div class="each-question-heading">
+                      <strong>Question 1</strong>
+                    </div>
+                    <div class="each-question-subject">Math</div>
+                  </div>
+                  <div class="each-question-label">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Sequi fuga et quos. Neque perspiciatis dolor voluptatum amet
+                    illo doloribus laboriosam soluta eos et dolorum. Veritatis
+                    voluptatum aperiam accusantium aspernatur aliquam!
+                  </div>
+                </div>
+                <div class="each-question-body">
+                  <div class="question-body-chart"></div>
+                  <div class="body-table-container">
+                    <table class="question-body-table table">
+                      <thead>
+                        <tr>
+                          <th class="table-col-padding">Rank</th>
+                          <th class="table-col-padding">Name</th>
+                          <th class="table-col-padding">Avg Time (Sec)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="table-col-padding">1</td>
+                          <td class="table-col-padding">
+                            <i class="fas fa-award"></i> Vishal
+                          </td>
+                          <td class="table-col-padding">10</td>
+                        </tr>
+                        <tr>
+                          <td class="table-col-padding">1</td>
+                          <td class="table-col-padding">
+                            <i class="fas fa-award"></i> Vishal
+                          </td>
+                          <td class="table-col-padding">10</td>
+                        </tr>
+                        <tr>
+                          <td class="table-col-padding">1</td>
+                          <td class="table-col-padding">
+                            <i class="fas fa-award"></i> Vishal
+                          </td>
+                          <td class="table-col-padding">10</td>
+                        </tr>
+                        <tr>
+                          <td class="table-col-padding">1</td>
+                          <td class="table-col-padding">
+                            <i class="fas fa-award"></i> Vishal
+                          </td>
+                          <td class="table-col-padding">10</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div
-      class="modal fade"
-      id="studentModal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form id="studentForm">
-              <div class="mb-3">
-                <label for="roomCode" class="form-label"
-                  >Enter into a Quiz Room</label
-                >
+        <div class="chat-send">
+          <div class="chat-send-container hide">
+            <div class="chat-send-default">
+              <div class="chat-send-attachment">
+                <i class="fas fa-paperclip"></i>
+              </div>
+              <div class="chat-send-body">
                 <input
                   type="text"
-                  class="form-control"
-                  id="quizeCode"
-                  name="roomCode"
+                  id="chat-send-input"
+                  placeholder="Write something here ..."
                 />
-                <div class="form-text">
-                  Enter the unique quiz room id provided by your teacher.
-                </div>
               </div>
-              <div class="mb-3">
-                <label for="name" class="form-label">Enter Your Name</label>
-                <input type="text" required class="form-control" id="name" />
-                <div class="form-text"></div>
+              <div class="chat-send-btn">
+                <i class="far fa-paper-plane"></i>
               </div>
-            </form>
+            </div>
           </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="submit" class="btn btn-primary" form="studentForm">
-              Enter into Quiz Room
-            </button>
+          <div class="chat-send-container">
+            <div class="send-question-teacher">
+              <div class="question-teacher-option active">
+                <div class="option-icon">
+                  <i class="fas fa-list"></i>
+                </div>
+                <div class="option-label">Questions</div>
+              </div>
+              <div class="question-teacher-option">
+                <div class="option-icon">
+                  <i class="fas fa-medal"></i>
+                </div>
+                <div class="option-label">Leaderboard</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
