@@ -54,6 +54,7 @@ io.on("connection", (socket) => {
     questionAsked.push({  
       question: data.question,
       questionId: data.questionId,
+      qSubject: data.subject,
     });
 
     socket.to(data.roomCode).emit("quiz_question", data);

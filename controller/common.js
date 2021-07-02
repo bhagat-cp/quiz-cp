@@ -15,10 +15,10 @@ exports.performance = (req, res, next) => {
     if (!ans.rooms[query]) return;
     let filterData = {};
     filterData.studentName = ans.studentName;
-    filterData.studentId = ans.studentId;
-    filterData.correctAnswers = ans.rooms[query].qAnswered.correct;
-    filterData.wrongAnswers = ans.rooms[query].qAnswered.wrong;
-    filterData.qSkipped = ans.rooms[query].qSkipped;
+    // filterData.studentId = ans.studentId;
+    filterData.answeres = ans.rooms[query].qAnswered;
+    // filterData.wrongAnswers = ans.rooms[query].qAnswered.wrong;
+    // filterData.qSkipped = ans.rooms[query].qSkipped;
     filterData.score = ans.rooms[query].score;
     if (ans.rooms[query].score > 0) {
       filterData.totalTime = ans.rooms[query].totalTime;
@@ -30,45 +30,52 @@ exports.performance = (req, res, next) => {
 
   const eachQuestionDetail = questionAsked.map((q) => {
     let answeres = results.map((r) => {
-      for (let i = 0; i < r?.correctAnswers.length; i++) {
-        const ca = r.correctAnswers[i];
+      for (let i = 0; i < r?.answeres.length; i++) {
+        const ca = r.answeres[i];
         if (ca.questionId === q.questionId) {
           return {
             studentName: r.studentName,
-            timeTake: ca.timeTaken,
-            status: "Correct",
+            timeTaken: ca.timeTaken,
+            score: r.score   
           };
         }
       }
-      for (let i = 0; i < r?.wrongAnswers.length; i++) {
-        const ca = r.wrongAnswers[i];
-        if (ca.questionId === q.questionId) {
-          return {
-            studentName: r.studentName,
-            timeTake: ca.timeTaken,
-            status: "Wrong",
-          };
-        }
-      }
-      for (let i = 0; i < r?.qSkipped.length; i++) {
-        const ca = r.qSkipped[i];
-        if (ca.questionId === q.questionId) {
-          return {
-            studentName: r.studentName,
-            timeTake: ca.timeTaken,
-            status: "Skipped",
-          };
-        }
-      }
+
+      // for (let i = 0; i < r?.wrongAnswers.length; i++) {
+      //   const ca = r.wrongAnswers[i];
+      //   if (ca.questionId === q.questionId) {
+      //     return {
+      //       studentName: r.studentName,
+      //       timeTake: ca.timeTaken,
+      //       status: "Wrong",
+      //     };
+      //   }
+      // }
+      // for (let i = 0; i < r?.qSkipped.length; i++) {
+      //   const ca = r.qSkipped[i];
+      //   if (ca.questionId === q.questionId) {
+      //     return {
+      //       studentName: r.studentName,
+      //       timeTake: ca.timeTaken,
+      //       status: "Skipped",
+      //     };
+      //   }
+      // }
     });
+    console.log(q);
     return {
       question: q.question,
-      questionId: q.questionId,
+      // questionId: q.questionId,
+      qSubject: q.qSubject,
       answers: answeres || [],
-    };
+    };  
   });
 
   results.sort(descendingOrder);
+  if(results.length > 3) {
+    results.length = 3;
+
+  }  
 
   return res
     .status(200)
@@ -79,7 +86,7 @@ exports.getParticipantsList = (req, res, next) => {
   const query = req.query.roomCode;
 
   for (let i = 0; i < quizRooms.length; i++) {
-    if (quizRooms[i].roomId == query) {
+    if (quizRooms[i].roomId == query) {  
       return res.status(200).json({ data: quizRooms[i] });
     }
   }

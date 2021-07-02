@@ -64,33 +64,36 @@ exports.questionAnswered = (req, res, next) => {
   if (!studentsAnsweres[studentIndex].rooms[roomCode]) {
     studentsAnsweres[studentIndex].rooms[roomCode] = {};
     studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"];
-    studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"] = {};
-    studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"]["correct"] = [];
-    studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"]["wrong"] = [];
-    studentsAnsweres[studentIndex].rooms[roomCode]["qSkipped"] = [];
+    studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"] = [];
+    // studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"]["correct"] = [];
+    // studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"]["wrong"] = [];
+    // studentsAnsweres[studentIndex].rooms[roomCode]["qSkipped"] = [];
     studentsAnsweres[studentIndex].rooms[roomCode].score = 0;
     studentsAnsweres[studentIndex].rooms[roomCode].totalTime = 0;
   }
 
   if (correct) {
-    studentsAnsweres[studentIndex].rooms[roomCode].qAnswered.correct.push({
+    studentsAnsweres[studentIndex].rooms[roomCode].qAnswered.push({
       qIndex,
       questionId,
       answer,
       timeTaken,
       teacherId,
       date,
+      status: 'correct',
     });
     studentsAnsweres[studentIndex].rooms[roomCode].score += 1;
-    studentsAnsweres[studentIndex].rooms[roomCode].totalTime += timeTaken;
   } else {
-    studentsAnsweres[studentIndex].rooms[roomCode].qAnswered.wrong.push({
+    studentsAnsweres[studentIndex].rooms[roomCode].qAnswered.push({
       qIndex,
       questionId,
       teacherId,
+      timeTaken,
       date,
+      status: 'wrong',
     });
   }
+  studentsAnsweres[studentIndex].rooms[roomCode].totalTime += timeTaken;
 
   return res
     .status(201)
@@ -98,55 +101,55 @@ exports.questionAnswered = (req, res, next) => {
 };
 
 exports.questionSkipped = (req, res, next) => {
-  let data = req.body;
-  const {
-    studentName,
-    studentId,
-    qIndex,
-    questionId,
-    status,
-    roomCode,
-    teacherId,
-    date,
-  } = data;
+//   let data = req.body;
+//   const {
+//     studentName,
+//     studentId,
+//     qIndex,
+//     questionId,
+//     status,
+//     roomCode,
+//     teacherId,
+//     date,
+//   } = data;
 
-  let studentIndex = studentsAnsweres.findIndex(
-    (stud) => stud.studentId === studentId
-  );
+//   let studentIndex = studentsAnsweres.findIndex(
+//     (stud) => stud.studentId === studentId
+//   );
 
-  if (studentIndex === -1) {
-    studentIndex = studentsAnsweres.length;
-    studentsAnsweres.push({
-      studentName,
-      studentId,
-    });
-  }
+//   if (studentIndex === -1) {
+//     studentIndex = studentsAnsweres.length;
+//     studentsAnsweres.push({
+//       studentName,
+//       studentId,
+//     });
+//   }
 
-  if (!studentsAnsweres[studentIndex].rooms) {
-    studentsAnsweres[studentIndex].rooms = {};
-  }
+//   if (!studentsAnsweres[studentIndex].rooms) {
+//     studentsAnsweres[studentIndex].rooms = {};
+//   }
 
-  if (!studentsAnsweres[studentIndex].rooms[roomCode]) {
-    studentsAnsweres[studentIndex].rooms[roomCode] = {};
-    studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"];
-    studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"] = {};
-    studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"]["correct"] = [];
-    studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"]["wrong"] = [];
-    studentsAnsweres[studentIndex].rooms[roomCode].qSkipped = [];
-    studentsAnsweres[studentIndex].rooms[roomCode].score = 0;
-    studentsAnsweres[studentIndex].rooms[roomCode].totalTime = 0;
-  }
+//   if (!studentsAnsweres[studentIndex].rooms[roomCode]) {
+//     studentsAnsweres[studentIndex].rooms[roomCode] = {};
+//     studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"];
+//     studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"] = {};
+//     studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"]["correct"] = [];
+//     studentsAnsweres[studentIndex].rooms[roomCode]["qAnswered"]["wrong"] = [];
+//     studentsAnsweres[studentIndex].rooms[roomCode].qSkipped = [];
+//     studentsAnsweres[studentIndex].rooms[roomCode].score = 0;
+//     studentsAnsweres[studentIndex].rooms[roomCode].totalTime = 0;
+//   }
 
-  studentsAnsweres[studentIndex].rooms[roomCode].qSkipped.push({
-    qIndex,
-    questionId,
-    teacherId,
-    date,
-  });
+//   studentsAnsweres[studentIndex].rooms[roomCode].qSkipped.push({
+//     qIndex,
+//     questionId,
+//     teacherId,
+//     date,
+//   });
 
-  return res
-    .status(201)
-    .json({ status: "input recorded", data: studentsAnsweres });
+//   return res
+//     .status(201)
+//     .json({ status: "input recorded", data: studentsAnsweres });
 };
 
 exports.createQuizRooms = (req, res, next) => {
