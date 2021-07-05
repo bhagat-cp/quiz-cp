@@ -1,16 +1,38 @@
-const questions = require("./../modal/questions");
+const axios = require('axios');
+const ShortUniqueId = require('short-unique-id');
+
+let questions = require("./../modal/questions");
 const studentsAnsweres = require("./../modal/studentsAnswers");
 const quizRooms = require("./../modal/quizRooms");
 
-exports.getQuestion = (req, res, next) => {
+const uid = new ShortUniqueId();
+
+exports.getQuestion = async(req, res, next) => {
   let query = req.query.qindex;
+  console.log(query);
   query = Number(query);
   let totalQuestions = questions.length;
+  console.log(totalQuestions, query);
+  // totalQuestions = 0;
+  if(totalQuestions == 0) {
+    try {
+      let resRaw = await axios.get(`https://opentdb.com/api.php?amount=10`);
+      let res = await resRaw.data;
+      questions = res.results;
+      questions.map(q => {
+        q.questionId = uid();
+      })
+      console.log(questions);
+      totalQuestions = questions.length;
+    } catch(error) {
+      console.log(error.message);    
+    }
+  }
 
   if (query >= totalQuestions) {
     return res.status(301).json({
       status: "failed",
-      message: "No new question",
+      message: "No new question!!",
     });
   }
 
@@ -41,7 +63,7 @@ exports.questionAnswered = (req, res, next) => {
 
   let correct = false;
 
-  if (questions[qIndex].answer == answer) {
+  if (questions[qIndex].correct_answer == answer) {
     correct = true;
   }
 
