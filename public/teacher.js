@@ -60,6 +60,7 @@ const getQuestion = async () => {
     const url = `${BASE_URL}/teacher/get-question?qindex=${QINDEX}`;
     const resRaw = await fetch(url, fetchOptions);
     const res = await resRaw.json();
+    console.log(res);
     if (res.status === "success") {
       QUESTION = res.data;
       displayQuestion(res.data);
@@ -79,9 +80,10 @@ const displayQuestion = () => {
   const qpartA = `
     <div class="question-header">
     <div class="question-header-number">
-    Question ${QINDEX}<small>/2</small>
+    Question ${QINDEX + 1}<small>/10</small>
     </div>
-    <div class="question-header-subject">Math</div>
+    <div class="question-header-subject">${capitalizeWord(QUESTION.difficulty)}</div>
+    <div class="question-header-subject">${QUESTION.category}</div>
     </div>
     <div class="question-info">
     ${QUESTION.question}
@@ -89,13 +91,13 @@ const displayQuestion = () => {
   `;
 
   let qPartB = ``;
-  if (QUESTION.type === "input") {
+  if (QUESTION.type === "open-ended" ) {
     qPartB = `
     <div class="question-note">
       <p>
         <strong>Note : </strong>
         <span class="text-red"
-          >This is an open ended questionwhere participants can type
+          >This is an open ended question where participants can type
           their own answers
         </span>
       </p>
@@ -103,24 +105,36 @@ const displayQuestion = () => {
     `;
   }
 
-  if (QUESTION.type === "mcq") {
-    qPartB = `<div class="question-options">`;
-    QUESTION.options.map((op) => {
-      let correct = "";
-      // console.log(op, QUESTION);
-      if (op == QUESTION.answer) {
-        correct = `
-        <div class="question-option-correct">
-          <i class="fas fa-check-circle"></i>
-        </div>`;
-      }
+  let num = generateRandomNumber(0, 3);
 
+  if (QUESTION.type === "multiple" || QUESTION.type === "boolean") {
+    qPartB = `<div class="question-options">`;
+    if(QUESTION.type === "boolean") {
+      num = generateRandomNumber(0, 1);
+    }
+
+    let counter = 0;
+    let maxOption = QUESTION.incorrect_answers.length + 1;
+    for(let i = 0; i < num; i++) {
       qPartB += `
       <div class="question-option">
-        <div class="question-option-info">${op}</div>
-        ${correct}
+        <div class="question-option-info">${QUESTION.incorrect_answers[counter]}</div>
       </div>`;
-    });
+      counter++;
+    }
+    qPartB += ` <div class="question-option">
+      <div class="question-option-info">${QUESTION.correct_answer}</div>
+        <div class="question-option-correct">
+          <i class="fas fa-check-circle"></i>
+        </div>
+      </div>`;
+    for(let i = num+1; i < maxOption; i++) {
+      qPartB += `
+      <div class="question-option">
+        <div class="question-option-info">${QUESTION.incorrect_answers[counter]}</div>
+      </div>`;
+      counter++;
+    }
     qPartB += `</div>`;
   }
 
@@ -137,6 +151,21 @@ const displayQuestion = () => {
 };
 
 // ///////////////////////////////////////////////////////////////////////////
+
+const generateRandomNumber = (min, max) => {
+  return Math.floor(Math.random() * (max - min) + min)
+}
+
+// //////////////////////////////////////////////////////////////
+
+const capitalizeWord = (word) => {
+  const lower = word.toLowerCase();
+  return word.charAt(0).toUpperCase() + lower.slice(1);
+}
+
+
+// ///////////////////////////////////////////////////////////////////////////
+
 
 // const qtnNextBtnHTML = document.querySelector('#qtn-next-btn');
 // const qtnSendBtnHTML = document.querySelector('#qtn-send-btn');

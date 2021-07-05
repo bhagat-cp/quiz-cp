@@ -63,14 +63,23 @@ body {
   flex: 1;
 }
 
-.chat-toolbar-option {
+.chat-toolbar-close {
   display: flex;
-  flex: 1;
   flex-direction: column;
   align-items: center;
   color: gray;
   cursor: pointer;
   justify-content: center;
+}
+
+.chat-toolbar-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: gray;
+  cursor: pointer;
+  justify-content: center;
+  min-width: 80px;
 }
 
 .toolbar-option-icon {
@@ -267,6 +276,7 @@ body {
 .question-option {
   display: flex;
   margin-bottom: 2%;
+  
 }
 
 .question-option-info {
@@ -279,6 +289,7 @@ body {
   border-bottom-right-radius: 5%;
   margin-right: 5%;
   cursor: pointer;
+  min-width: 150px;
 }
 
 .question-option-correct {

@@ -33,36 +33,40 @@
       <div class="video"></div>
       <div class="chat">
         <div class="chat-toolbar">
-          <div
-            id="chat-toolbar-default"
-            class="chat-toolbar-option toolbar-option-active active"
-          >
-            <div data-id="chat-toolbar-default" class="toolbar-option-icon">
-              <i data-id="chat-toolbar-default" class="far fa-comments"></i>
+          <div class="chat-toolbar-options">
+            <div
+              id="chat-toolbar-default"
+              class="chat-toolbar-option toolbar-option-active active"
+            >
+              <div data-id="chat-toolbar-default" class="toolbar-option-icon">
+                <i data-id="chat-toolbar-default" class="far fa-comments"></i>
+              </div>
+              <div class="toolbar-option-name">Chat</div>
             </div>
-            <div class="toolbar-option-name">Chat</div>
-          </div>
-          <div class="chat-toolbar-option">
-            <div class="toolbar-option-icon">
-              <i class="fas fa-user-friends"></i>
+            <div class="chat-toolbar-option">
+              <div class="toolbar-option-icon">
+                <i class="fas fa-user-friends"></i>
+              </div>
+              <div class="toolbar-option-name">Room</div>
             </div>
-            <div class="toolbar-option-name">Room</div>
-          </div>
-          <div class="chat-toolbar-option">
-            <div class="toolbar-option-icon">
-              <i class="fas fa-cog"></i>
+            <div class="chat-toolbar-option">
+              <div class="toolbar-option-icon">
+                <i class="fas fa-cog"></i>
+              </div>
+              <div class="toolbar-option-name">Settings</div>
             </div>
-            <div class="toolbar-option-name">Settings</div>
-          </div>
-          <div id="chat-toolbar-quiz" class="chat-toolbar-option">
-            <div data-id="chat-toolbar-quiz" class="toolbar-option-icon">
-              <i data-id="chat-toolbar-quiz" class="far fa-edit"></i>
+            <div id="chat-toolbar-quiz" class="chat-toolbar-option">
+              <div data-id="chat-toolbar-quiz" class="toolbar-option-icon">
+                <i data-id="chat-toolbar-quiz" class="far fa-edit"></i>
+              </div>
+              <div class="toolbar-option-name">Quiz</div>
             </div>
-            <div class="toolbar-option-name">Quiz</div>
           </div>
-          <div class="chat-toolbar-option">
-            <div class="toolbar-option-icon close-icon">
-              <i class="fas fa-times"></i>
+          <div>
+            <div class="chat-toolbar-option">
+              <div class="toolbar-option-icon close-icon">
+                <i class="fas fa-times"></i>
+              </div>
             </div>
           </div>
         </div>
@@ -109,25 +113,25 @@
 
             <div class="leaderboard hide" id="leaderboard">
               <div>
-              <div class="main-leaderboard">
-                <div class="main-leaderboard-heading">Leaderboard</div>
-                <div class="main-leaderboard-table">
-                  <table class="table main-leaderboard-table">
-                    <thead class="leaderboard-table-header">
-                      <tr class="table-row-margin">
-                        <th class="table-col-padding">Rank</th>
-                        <th class="table-col-padding">Name</th>
-                        <th class="table-col-padding">Avg Time</th>
-                        <th class="table-col-padding">Correct Answeres</th>
-                      </tr>
-                    </thead>
-                    <tbody class="leaderboard-table-body">
-                      <!-- rows -->
-                    </tbody>
-                  </table>
+                <div class="main-leaderboard">
+                  <div class="main-leaderboard-heading">Leaderboard</div>
+                  <div class="main-leaderboard-table">
+                    <table class="table main-leaderboard-table">
+                      <thead class="leaderboard-table-header">
+                        <tr class="table-row-margin">
+                          <th class="table-col-padding">Rank</th>
+                          <th class="table-col-padding">Name</th>
+                          <th class="table-col-padding">Avg Time</th>
+                          <th class="table-col-padding">Correct Answeres</th>
+                        </tr>
+                      </thead>
+                      <tbody class="leaderboard-table-body">
+                        <!-- rows -->
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-            </div>
               <div class="question-list">
                 <!-- each question -->
               </div>
@@ -154,17 +158,24 @@
           </div>
           <div class="chat-send-container hide" id="chat-send-quiz">
             <div class="chat-send-question">
-              <div class="send-question-option active" id="question-list-option">
+              <div
+                class="send-question-option active"
+                id="question-list-option"
+              >
                 <div data-id="question-list-option" class="option-icon">
                   <i data-id="question-list-option" class="fas fa-list"></i>
                 </div>
-                <div data-id="question-list-option" class="option-label">Questions</div>
+                <div data-id="question-list-option" class="option-label">
+                  Questions
+                </div>
               </div>
               <div class="send-question-option" id="leaderboard-option">
                 <div data-id="leaderboard-option" class="option-icon">
                   <i data-id="leaderboard-option" class="fas fa-medal"></i>
                 </div>
-                <div data-id="leaderboard-option" class="option-label">Leaderboard</div>
+                <div data-id="leaderboard-option" class="option-label">
+                  Leaderboard
+                </div>
               </div>
             </div>
           </div>

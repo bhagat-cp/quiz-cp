@@ -5,6 +5,7 @@ let chatMode = "default";
 let QUESTION;
 let ANSWER = "";
 let T1, T2;
+let TAB = 'default';
 
 const socket = io(`${BASE_URL}`);
 socket.on("connection");
@@ -16,12 +17,17 @@ const roomCode = "1234";
 const studentId = Math.random();
 const userType = "student";
 
+const toolbarQuizTab = document.querySelector('#toolbar-quiz-tab');
+
 socket.emit("join-room", roomCode);
 
 socket.on("quiz_question", (data) => {
   console.log(data);
   QUESTION = data;
   displayQuestion();
+  if(TAB == 'default') {
+    toolbarQuizTab.innerText = `Quiz (1)`
+  }
 });
 
 // ///////////////////////////////////////////////////////////////////////
@@ -43,6 +49,7 @@ const switchToolbarOptions = (e) => {
     chatBodyQuiz.classList.add("hide");
     chatSendDefault.classList.remove("hide");
     chatSendQuiz.classList.add("hide");
+    TAB = 'default'
   }
 
   if (id === "chat-toolbar-quiz") {
@@ -52,6 +59,8 @@ const switchToolbarOptions = (e) => {
     chatBodyQuiz.classList.remove("hide");
     chatSendDefault.classList.add("hide");
     chatSendQuiz.classList.remove("hide");
+    TAB = 'quiz';
+    toolbarQuizTab.innerText = `Quiz`
   }
 };
 
@@ -65,9 +74,10 @@ const displayQuestion = () => {
   const qpartA = `
   <div class="question-header">
   <div class="question-header-number">
-  Question ${QUESTION.qIndex}<small>/2</small>
+  Question ${QUESTION.qIndex + 1}<small>/10</small>
   </div>
-  <div class="question-header-subject">Math</div>
+  <div class="question-header-subject">${capitalizeWord(QUESTION.difficulty)}</div>
+    <div class="question-header-subject">${QUESTION.category}</div>
   </div>
   <div class="question-info">
   ${QUESTION.question}
@@ -75,7 +85,7 @@ const displayQuestion = () => {
   `;
 
   let qPartB = ``;
-  if (QUESTION.type === "input") {
+  if (QUESTION.type === "open-ended") {
     qPartB = `
     <div class="question-note">
       <p>
@@ -89,19 +99,52 @@ const displayQuestion = () => {
     `;
   }
 
-  if (QUESTION.type === "mcq") {
-    console.log(QUESTION);
+  let num = generateRandomNumber(0, 3);
+
+  if (QUESTION.type === "multiple" || QUESTION.type === "boolean") {
     qPartB = `<div class="question-options">`;
-    QUESTION.options.map((op, index) => {
-      console.log(op);
+    if(QUESTION.type === "boolean") {
+      num = generateRandomNumber(0, 1);
+    }
+
+    let counter = 0;
+    let maxOption = QUESTION.incorrect_answers.length + 1;
+    for(let i = 0; i < num; i++) {
       qPartB += `
-      <div class="question-option" onclick="selectOption(event, '${op}')">
-        <div id="question-option-${
-          index + 1
-        }"  class="question-option-info">${op}</div>
+      <div class="question-option"  onclick="selectOption(event, '${QUESTION.incorrect_answers[counter]}')">
+        <div class="question-option-info" id="question-option-${i+1}">${QUESTION.incorrect_answers[counter]}</div>
         <div class="question-option-correct"></div>
       </div>`;
-    });
+      counter++;
+    }
+    qPartB += ` <div class="question-option"  onclick="selectOption(event, '${QUESTION.correct_answer}')">
+      <div class="question-option-info" id="question-option-${counter+1}">${QUESTION.correct_answer}</div>
+        <div class="question-option-correct">
+        </div>
+      </div>`;
+
+    for(let i = num+1; i < maxOption; i++) {
+      qPartB += `
+      <div class="question-option"  onclick="selectOption(event, '${QUESTION.incorrect_answers[counter]}')">
+        <div class="question-option-info" id="question-option-${i+1}">${QUESTION.incorrect_answers[counter]}</div>
+        <div class="question-option-correct"></div>
+      </div>`;
+      counter++;
+    }
+
+  // if (QUESTION.type === "mcq") {
+  //   console.log(QUESTION);
+  //   qPartB = `<div class="question-options">`;
+  //   QUESTION.options.map((op, index) => {
+  //     console.log(op);
+  //     qPartB += `
+  //     <div class="question-option" onclick="selectOption(event, '${op}')">
+  //       <div id="question-option-${
+  //         index + 1
+  //       }"  class="question-option-info">${op}</div>
+  //       <div class="question-option-correct"></div>
+  //     </div>`;
+  //   });
     qPartB += `</div>`;
   }
 
@@ -115,6 +158,20 @@ const displayQuestion = () => {
   studentQuestionHTML.innerHTML = wholeQuestion;
   T1 = new Date();
 };
+
+
+// ///////////////////////////////////////////////////////////////////////////
+
+const generateRandomNumber = (min, max) => {
+  return Math.floor(Math.random() * (max - min) + min)
+}
+
+// //////////////////////////////////////////////////////////////
+
+const capitalizeWord = (word) => {
+  const lower = word.toLowerCase();
+  return word.charAt(0).toUpperCase() + lower.slice(1);
+}
 
 // ///////////////////////////////////////////////////////////////////////////////////
 
@@ -155,6 +212,7 @@ const submitAnswer = async () => {
 // /////////////////////////////////////////////////////////////////////////
 
 const selectOption = (e, op) => {
+  console.log(op);
   const quesOp1 = document.querySelector("#question-option-1");
   const quesOp2 = document.querySelector("#question-option-2");
   const quesOp3 = document.querySelector("#question-option-3");
@@ -166,6 +224,7 @@ const selectOption = (e, op) => {
   e.target.style.backgroundColor = "green";
 
   if (e.target.id == "question-option-1") {
+    console.log('aaa');
     quesOp1.parentNode.lastElementChild.innerHTML = `<i class="fas fa-check-circle"></i>`;
     quesOp1.style.backgroundColor = "green";
 
