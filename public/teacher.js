@@ -82,7 +82,9 @@ const displayQuestion = () => {
     <div class="question-header-number">
     Question ${QINDEX + 1}<small>/10</small>
     </div>
-    <div class="question-header-subject">${capitalizeWord(QUESTION.difficulty)}</div>
+    <div class="question-header-subject">${capitalizeWord(
+      QUESTION.difficulty
+    )}</div>
     <div class="question-header-subject">${QUESTION.category}</div>
     </div>
     <div class="question-info">
@@ -91,7 +93,7 @@ const displayQuestion = () => {
   `;
 
   let qPartB = ``;
-  if (QUESTION.type === "open-ended" ) {
+  if (QUESTION.type === "open-ended") {
     qPartB = `
     <div class="question-note">
       <p>
@@ -109,13 +111,13 @@ const displayQuestion = () => {
 
   if (QUESTION.type === "multiple" || QUESTION.type === "boolean") {
     qPartB = `<div class="question-options">`;
-    if(QUESTION.type === "boolean") {
+    if (QUESTION.type === "boolean") {
       num = generateRandomNumber(0, 1);
     }
 
     let counter = 0;
     let maxOption = QUESTION.incorrect_answers.length + 1;
-    for(let i = 0; i < num; i++) {
+    for (let i = 0; i < num; i++) {
       qPartB += `
       <div class="question-option">
         <div class="question-option-info">${QUESTION.incorrect_answers[counter]}</div>
@@ -128,7 +130,7 @@ const displayQuestion = () => {
           <i class="fas fa-check-circle"></i>
         </div>
       </div>`;
-    for(let i = num+1; i < maxOption; i++) {
+    for (let i = num + 1; i < maxOption; i++) {
       qPartB += `
       <div class="question-option">
         <div class="question-option-info">${QUESTION.incorrect_answers[counter]}</div>
@@ -153,26 +155,28 @@ const displayQuestion = () => {
 // ///////////////////////////////////////////////////////////////////////////
 
 const generateRandomNumber = (min, max) => {
-  return Math.floor(Math.random() * (max - min) + min)
-}
+  return Math.floor(Math.random() * (max - min) + min);
+};
 
 // //////////////////////////////////////////////////////////////
 
 const capitalizeWord = (word) => {
   const lower = word.toLowerCase();
   return word.charAt(0).toUpperCase() + lower.slice(1);
-}
-
+};
 
 // ///////////////////////////////////////////////////////////////////////////
 
-
-// const qtnNextBtnHTML = document.querySelector('#qtn-next-btn');
-// const qtnSendBtnHTML = document.querySelector('#qtn-send-btn');
-
 function sendQuestion(e) {
+  const qtnNextBtnHTML = document.querySelector("#qtn-next-btn");
+  const qtnSendBtnHTML = document.querySelector("#qtn-send-btn");
+
+  qtnSendBtnHTML.innerText = "Sent";
+  qtnSendBtnHTML.style.backgroundColor = `rgb(73, 199, 237)`;
+  qtnSendBtnHTML.style.color = "white";
   // console.log(event);
   console.log(QUESTION);
+
   socket.emit("ques_send", {
     ...QUESTION,
     roomCode: roomCode,
@@ -185,6 +189,8 @@ function sendQuestion(e) {
 const chatSendQuestionHTML = document.querySelector(".chat-send-question");
 const chatQuizHTML = document.querySelector("#chat-quiz");
 const leaderboardHTML = document.querySelector("#leaderboard");
+const questionListOptionHTML = document.querySelector("#question-list-option");
+const leaderboardOptionHTML = document.querySelector("#leaderboard-option");
 
 const questionToolbarHandler = (e) => {
   let id = e.target.id || e.target.dataset.id;
@@ -192,11 +198,15 @@ const questionToolbarHandler = (e) => {
   if (id == "question-list-option") {
     chatQuizHTML.classList.remove("hide");
     leaderboardHTML.classList.add("hide");
+    questionListOptionHTML.classList.add("active");
+    leaderboardOptionHTML.classList.remove("active");
   }
 
   if (id == "leaderboard-option") {
     chatQuizHTML.classList.add("hide");
     leaderboardHTML.classList.remove("hide");
+    questionListOptionHTML.classList.remove("active");
+    leaderboardOptionHTML.classList.add("active");
     fetchPerformance();
   }
 };
@@ -214,8 +224,8 @@ const displayMainLeaderBoard = (res) => {
   res.map((rank, index) => {
     console.log(rank);
     let avgTime = 0;
-    if(rank?.totalTime != 0) {
-      avgTime = Math.round((rank?.totalTime/1000)/rank?.score)
+    if (rank?.totalTime != 0) {
+      avgTime = Math.round(rank?.totalTime / 1000 / rank?.score);
     }
 
     tr += `<tr class="table-row-margin">
@@ -239,6 +249,7 @@ const displayQuestionsList = (res) => {
   let eachQuestion = ``;
 
   res.map((eq, index) => {
+    console.log(eq);
     eachQuestion += `
     <div class="each-question-container" >
       <div class="each-question" onclick="expandQuestion(event)" >
@@ -252,20 +263,102 @@ const displayQuestionsList = (res) => {
           ${eq.question}
         </div>
       </div>`;
-    const tableData = displayEachQuestionTable(eq.answers);
+    eachQuestion += ``;
+    const tableData = displayEachQuestionTable(eq.answers, index);
+    eachQuestionChartData(eq.answers, index);
     eachQuestion += tableData;
     eachQuestion += `</div></div>`;
   });
-  
+
   questionListHTML.innerHTML = eachQuestion;
+  displayCharts();
 };
 
 // //////////////////////////////////////////////////////////////////////
 
-const displayEachQuestionTable = (res) => {
+const chartData = {};
+const eachQuestionChartData = (res, index) => {
+  console.log(res, index);
+  if (res == null) return;
+  if (chartData[`q${index}`] == null) {
+    chartData[`q${index}`] = {
+      scores: [],
+      names: [],
+    };
+  }
+  res.map((r) => {
+    console.log(r);
+    if (r == null) return;
+    chartData[`q${index}`].scores.push(r.score);
+  });
+  res.map((r) => {
+    if (r == null) return;
+    chartData[`q${index}`].names.push(r.studentName);
+  });
+};
+
+// //////////////////////////////////////////////////////////////////////
+
+const displayCharts = () => {
+  let c = 0;
+  console.log(chartData);
+  for (const prop in chartData) {
+    console.log(prop);
+    console.log(chartData[prop]);
+    const node = document.querySelector(`#myChart-${c}`);
+
+    const labels = chartData[`q${c}`].names;
+    const scores = chartData[`q${c}`].scores;
+    const length = labels.length;
+    const bgColors = [];
+    const borderColors = [];
+    for (let i = 0; i < length; i++) {
+      const r = randomNumGenerate(0, 255);
+      const g = randomNumGenerate(0, 255);
+      const b = randomNumGenerate(0, 255);
+      bgColors.push(`rgba(${r}, ${g}, ${b}, 0.2)`);
+      borderColors.push(`rgba(${r}, ${g}, ${b}, 1)`);
+    }
+    c++;
+    new Chart(node, {
+      type: "bar",
+      data: {
+        labels: [...labels],
+        datasets: [
+          {
+            label: "# Scores",
+            data: [...scores],
+            backgroundColor: [...bgColors],
+            borderColor: [...borderColors],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+  }
+};
+
+// //////////////////////////////////////////////////////////////////////
+
+const randomNumGenerate = (max, min) => {
+  return Math.round(Math.random() * (max - min) + min);
+};
+
+// ///////////////////////////////////////////////////////////////////////
+
+const displayEachQuestionTable = (res, index) => {
   let wholeTable = `
   <div class="each-question-body hide">
-    <div class="question-body-chart"></div>
+    <div class="question-body-chart">
+      <canvas id="myChart-${index}" height="380" ></canvas>
+    </div>
     <div class="body-table-container">
       <table class="question-body-table table">`;
 
@@ -281,16 +374,18 @@ const displayEachQuestionTable = (res) => {
   let tableBody = `
   <tbody>`;
 
-  let tr = ``;
-
   res?.map((answer, index) => {
-    tr += `
+    let t = 0;
+    if (answer?.timeTaken) {
+      t = Math.round(answer.timeTaken / 1000);
+    }
+    let tr = `
     <tr>
       <td class="table-col-padding">${index + 1}</td>
       <td class="table-col-padding">
         <i class="fas fa-award"></i> ${answer?.studentName}
       </td>
-      <td class="table-col-padding">${Math.round((answer.timeTaken)/1000)}</td>
+      <td class="table-col-padding">${t}</td>
     </tr>
     `;
     tableBody += tr;
@@ -316,17 +411,16 @@ const fetchPerformance = async () => {
     }
   );
   const res = await rawRes.json();
-  // console.log(res);
+  console.log(res);
   displayMainLeaderBoard(res.ranks);
   displayQuestionsList(res.eachQuestionDetail);
 };
 
-
 // ///////////////////////////////////////////////////////////////////
 
-const mainLeaderbaordHTML = document.querySelector('.main-leaderboard');
-const expandQuestion = e => {
+const mainLeaderbaordHTML = document.querySelector(".main-leaderboard");
+const expandQuestion = (e) => {
   e.target.parentNode.parentNode.lastElementChild.classList.remove("hide");
   console.log(e.target.parentNode.parentNode.lastElementChild);
-  mainLeaderbaordHTML.parentNode.classList.add("hide")
-}
+  mainLeaderbaordHTML.parentNode.classList.add("hide");
+};

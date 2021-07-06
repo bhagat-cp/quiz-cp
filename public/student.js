@@ -5,7 +5,7 @@ let chatMode = "default";
 let QUESTION;
 let ANSWER = "";
 let T1, T2;
-let TAB = 'default';
+let TAB = "default";
 
 const socket = io(`${BASE_URL}`);
 socket.on("connection");
@@ -17,7 +17,7 @@ const roomCode = "1234";
 const studentId = Math.random();
 const userType = "student";
 
-const toolbarQuizTab = document.querySelector('#toolbar-quiz-tab');
+const toolbarQuizTab = document.querySelector("#toolbar-quiz-tab");
 
 socket.emit("join-room", roomCode);
 
@@ -25,8 +25,8 @@ socket.on("quiz_question", (data) => {
   console.log(data);
   QUESTION = data;
   displayQuestion();
-  if(TAB == 'default') {
-    toolbarQuizTab.innerText = `Quiz (1)`
+  if (TAB == "default") {
+    toolbarQuizTab.innerText = `Quiz (1)`;
   }
 });
 
@@ -49,7 +49,7 @@ const switchToolbarOptions = (e) => {
     chatBodyQuiz.classList.add("hide");
     chatSendDefault.classList.remove("hide");
     chatSendQuiz.classList.add("hide");
-    TAB = 'default'
+    TAB = "default";
   }
 
   if (id === "chat-toolbar-quiz") {
@@ -59,8 +59,8 @@ const switchToolbarOptions = (e) => {
     chatBodyQuiz.classList.remove("hide");
     chatSendDefault.classList.add("hide");
     chatSendQuiz.classList.remove("hide");
-    TAB = 'quiz';
-    toolbarQuizTab.innerText = `Quiz`
+    TAB = "quiz";
+    toolbarQuizTab.innerText = `Quiz`;
   }
 };
 
@@ -76,7 +76,9 @@ const displayQuestion = () => {
   <div class="question-header-number">
   Question ${QUESTION.qIndex + 1}<small>/10</small>
   </div>
-  <div class="question-header-subject">${capitalizeWord(QUESTION.difficulty)}</div>
+  <div class="question-header-subject">${capitalizeWord(
+    QUESTION.difficulty
+  )}</div>
     <div class="question-header-subject">${QUESTION.category}</div>
   </div>
   <div class="question-info">
@@ -103,54 +105,52 @@ const displayQuestion = () => {
 
   if (QUESTION.type === "multiple" || QUESTION.type === "boolean") {
     qPartB = `<div class="question-options">`;
-    if(QUESTION.type === "boolean") {
+    if (QUESTION.type === "boolean") {
       num = generateRandomNumber(0, 1);
     }
 
     let counter = 0;
     let maxOption = QUESTION.incorrect_answers.length + 1;
-    for(let i = 0; i < num; i++) {
+    for (let i = 0; i < num; i++) {
       qPartB += `
-      <div class="question-option"  onclick="selectOption(event, '${QUESTION.incorrect_answers[counter]}')">
-        <div class="question-option-info" id="question-option-${i+1}">${QUESTION.incorrect_answers[counter]}</div>
+      <div class="question-option"  onclick="selectOption(event, '${
+        QUESTION.incorrect_answers[counter]
+      }')">
+        <div class="question-option-info" id="question-option-${i + 1}">${
+        QUESTION.incorrect_answers[counter]
+      }</div>
         <div class="question-option-correct"></div>
       </div>`;
       counter++;
     }
-    qPartB += ` <div class="question-option"  onclick="selectOption(event, '${QUESTION.correct_answer}')">
-      <div class="question-option-info" id="question-option-${counter+1}">${QUESTION.correct_answer}</div>
+    qPartB += ` <div class="question-option"  onclick="selectOption(event, '${
+      QUESTION.correct_answer
+    }')">
+      <div class="question-option-info" id="question-option-${counter + 1}">${
+      QUESTION.correct_answer
+    }</div>
         <div class="question-option-correct">
         </div>
       </div>`;
 
-    for(let i = num+1; i < maxOption; i++) {
+    for (let i = num + 1; i < maxOption; i++) {
       qPartB += `
-      <div class="question-option"  onclick="selectOption(event, '${QUESTION.incorrect_answers[counter]}')">
-        <div class="question-option-info" id="question-option-${i+1}">${QUESTION.incorrect_answers[counter]}</div>
+      <div class="question-option"  onclick="selectOption(event, '${
+        QUESTION.incorrect_answers[counter]
+      }')">
+        <div class="question-option-info" id="question-option-${i + 1}">${
+        QUESTION.incorrect_answers[counter]
+      }</div>
         <div class="question-option-correct"></div>
       </div>`;
       counter++;
     }
-
-  // if (QUESTION.type === "mcq") {
-  //   console.log(QUESTION);
-  //   qPartB = `<div class="question-options">`;
-  //   QUESTION.options.map((op, index) => {
-  //     console.log(op);
-  //     qPartB += `
-  //     <div class="question-option" onclick="selectOption(event, '${op}')">
-  //       <div id="question-option-${
-  //         index + 1
-  //       }"  class="question-option-info">${op}</div>
-  //       <div class="question-option-correct"></div>
-  //     </div>`;
-  //   });
     qPartB += `</div>`;
   }
 
   const qPartC = `
   <div class="question-actions">
-    <button id="qtn-submit-btn" onclick="submitAnswer()" class="question-action-btn">Next</button>
+    <button id="qtn-submit-btn" onclick="submitAnswer()" class="question-action-btn">Submit Response</button>
   </div>
   `;
 
@@ -159,23 +159,29 @@ const displayQuestion = () => {
   T1 = new Date();
 };
 
-
 // ///////////////////////////////////////////////////////////////////////////
 
 const generateRandomNumber = (min, max) => {
-  return Math.floor(Math.random() * (max - min) + min)
-}
+  return Math.floor(Math.random() * (max - min) + min);
+};
 
 // //////////////////////////////////////////////////////////////
 
 const capitalizeWord = (word) => {
   const lower = word.toLowerCase();
   return word.charAt(0).toUpperCase() + lower.slice(1);
-}
+};
 
 // ///////////////////////////////////////////////////////////////////////////////////
 
 const submitAnswer = async () => {
+  const qtnSubmitBtnHTML = document.querySelector("#qtn-submit-btn");
+
+  qtnSubmitBtnHTML.innerText = "Answered";
+  qtnSubmitBtnHTML.style.backgroundColor = `rgb(73, 199, 237)`;
+  qtnSubmitBtnHTML.style.color = "white";
+  qtnSubmitBtnHTML.disabled = true;
+
   T2 = new Date();
   if (!ANSWER) {
     ANSWER = "";
@@ -224,7 +230,7 @@ const selectOption = (e, op) => {
   e.target.style.backgroundColor = "green";
 
   if (e.target.id == "question-option-1") {
-    console.log('aaa');
+    console.log("aaa");
     quesOp1.parentNode.lastElementChild.innerHTML = `<i class="fas fa-check-circle"></i>`;
     quesOp1.style.backgroundColor = "green";
 
@@ -278,18 +284,26 @@ const selectOption = (e, op) => {
 const chatSendQuestionHTML = document.querySelector(".chat-send-question");
 const chatQuizHTML = document.querySelector("#chat-quiz");
 const leaderboardHTML = document.querySelector("#leaderboard");
+const questionListOptionHTML = document.querySelector("#question-list-option");
+const leaderboardOptionHTML = document.querySelector("#leaderboard-option");
 
 const questionToolbarHandler = (e) => {
   let id = e.target.id || e.target.dataset.id;
-
+  console.log(id);
   if (id == "question-list-option") {
     chatQuizHTML.classList.remove("hide");
+    chatQuizHTML.classList.remove("hide");
     leaderboardHTML.classList.add("hide");
+    questionListOptionHTML.classList.add("active");
+    leaderboardOptionHTML.classList.remove("active");
   }
 
   if (id == "leaderboard-option") {
+    console.log("hey");
     chatQuizHTML.classList.add("hide");
     leaderboardHTML.classList.remove("hide");
+    questionListOptionHTML.classList.remove("active");
+    leaderboardOptionHTML.classList.add("active");
     fetchPerformance();
   }
 };
@@ -307,8 +321,8 @@ const displayMainLeaderBoard = (res) => {
   res.map((rank, index) => {
     // console.log(rank);
     let avgTime = 0;
-    if(rank?.totalTime != 0) {
-      avgTime = Math.round((rank?.totalTime/1000)/rank?.score)
+    if (rank?.totalTime != 0) {
+      avgTime = Math.round(rank?.totalTime / 1000 / rank?.score);
     }
     tr += `<tr class="table-row-margin">
     <td class="table-col-padding">${index + 1}</td>
@@ -331,7 +345,6 @@ const displayQuestionsList = (res) => {
   let eachQuestion = ``;
 
   res.map((eq, index) => {
-    console.log(eq);
     eachQuestion += `
     <div class="each-question-container" >
       <div class="each-question" onclick="expandQuestion(event)" >
@@ -345,20 +358,102 @@ const displayQuestionsList = (res) => {
           ${eq.question}
         </div>
       </div>`;
-    const tableData = displayEachQuestionTable(eq.answers);
+    const tableData = displayEachQuestionTable(eq.answers, index);
+    eachQuestionChartData(eq.answers, index);
     eachQuestion += tableData;
     eachQuestion += `</div></div>`;
   });
 
   questionListHTML.innerHTML = eachQuestion;
+  displayCharts();
 };
 
 // //////////////////////////////////////////////////////////////////////
 
-const displayEachQuestionTable = (res) => {
+const chartData = {};
+const eachQuestionChartData = (res, index) => {
+  console.log(res, index);
+  if (res == null) return;
+  if (chartData[`q${index}`] == null) {
+    chartData[`q${index}`] = {
+      scores: [],
+      names: [],
+    };
+  }
+  res.map((r) => {
+    console.log(r);
+    if (r == null) return;
+    chartData[`q${index}`].scores.push(r.score);
+  });
+  res.map((r) => {
+    if (r == null) return;
+    chartData[`q${index}`].names.push(r.studentName);
+  });
+};
+
+// //////////////////////////////////////////////////////////////////////
+
+const displayCharts = () => {
+  let c = 0;
+  console.log(chartData);
+  for (const prop in chartData) {
+    console.log(prop);
+    console.log(chartData[prop]);
+    const node = document.querySelector(`#myChart-${c}`);
+    console.log(node);
+
+    const labels = chartData[`q${c}`].names;
+    const scores = chartData[`q${c}`].scores;
+    const length = labels.length;
+    const bgColors = [];
+    const borderColors = [];
+    for (let i = 0; i < length; i++) {
+      const r = randomNumGenerate(0, 255);
+      const g = randomNumGenerate(0, 255);
+      const b = randomNumGenerate(0, 255);
+      bgColors.push(`rgba(${r}, ${g}, ${b}, 0.2)`);
+      borderColors.push(`rgba(${r}, ${g}, ${b}, 1)`);
+    }
+    c++;
+    new Chart(node, {
+      type: "bar",
+      data: {
+        labels: [...labels],
+        datasets: [
+          {
+            label: "# Scores",
+            data: [...scores],
+            backgroundColor: [...bgColors],
+            borderColor: [...borderColors],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+  }
+};
+
+// //////////////////////////////////////////////////////////////////////
+
+const randomNumGenerate = (max, min) => {
+  return Math.round(Math.random() * (max - min) + min);
+};
+
+// //////////////////////////////////////////////////////////////////////
+
+const displayEachQuestionTable = (res, index) => {
   let wholeTable = `
   <div class="each-question-body hide">
-    <div class="question-body-chart"></div>
+    <div class="question-body-chart">
+      <canvas id="myChart-${index}" height="350" ></canvas>
+    </div>
     <div class="body-table-container">
       <table class="question-body-table table">`;
 
@@ -374,17 +469,19 @@ const displayEachQuestionTable = (res) => {
   let tableBody = `
   <tbody>`;
 
-  let tr = ``;
-
   res?.map((answer, index) => {
-    console.log(answer);
-    tr += `
+    let t = 0;
+    if (answer?.timeTaken) {
+      t = Math.round(answer.timeTaken / 1000);
+    }
+
+    let tr = `
     <tr>
       <td class="table-col-padding">${index + 1}</td>
       <td class="table-col-padding">
         <i class="fas fa-award"></i> ${answer?.studentName}
       </td>
-      <td class="table-col-padding">${Math.round((answer.timeTaken)/1000)}</td>
+      <td class="table-col-padding">${t}</td>
     </tr>
     `;
     tableBody += tr;
