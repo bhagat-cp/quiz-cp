@@ -43,7 +43,7 @@ io.on("connection", (socket) => {
 
       }
     }
-  });
+  });   
 
   socket.on("ques_send", (data) => {
     const qIndex = questionAsked.indexOf(
@@ -54,7 +54,7 @@ io.on("connection", (socket) => {
     questionAsked.push({  
       question: data.question,
       questionId: data.questionId,
-      qSubject: data.subject,
+      category: data.category,
     });
 
     socket.to(data.roomCode).emit("quiz_question", data);

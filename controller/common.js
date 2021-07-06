@@ -33,47 +33,36 @@ exports.performance = (req, res, next) => {
       for (let i = 0; i < r?.answeres.length; i++) {
         const ca = r.answeres[i];
         if (ca.questionId === q.questionId) {
+          let score;
+          if(ca.status === 'correct') {
+            score = 1
+          }
+          if(ca.status === 'wrong') {
+            score = 0
+          }
           return {
             studentName: r.studentName,
             timeTaken: ca.timeTaken,
-            score: r.score   
+            score: score   
           };
         }
       }
-
-      // for (let i = 0; i < r?.wrongAnswers.length; i++) {
-      //   const ca = r.wrongAnswers[i];
-      //   if (ca.questionId === q.questionId) {
-      //     return {
-      //       studentName: r.studentName,
-      //       timeTake: ca.timeTaken,
-      //       status: "Wrong",
-      //     };
-      //   }
-      // }
-      // for (let i = 0; i < r?.qSkipped.length; i++) {
-      //   const ca = r.qSkipped[i];
-      //   if (ca.questionId === q.questionId) {
-      //     return {
-      //       studentName: r.studentName,
-      //       timeTake: ca.timeTaken,
-      //       status: "Skipped",
-      //     };
-      //   }
-      // }
     });
-    console.log(q);
+    if(answeres.length === 0) {
+      answeres = []
+    }
+    console.log(q);        
     return {
       question: q.question,
       // questionId: q.questionId,
-      qSubject: q.qSubject,
+      qSubject: q.category,
       answers: answeres || [],
     };  
   });
 
   results.sort(descendingOrder);
   if(results.length > 3) {
-    results.length = 3;
+    results.length = 3;    
 
   }  
 
@@ -89,5 +78,6 @@ exports.getParticipantsList = (req, res, next) => {
     if (quizRooms[i].roomId == query) {  
       return res.status(200).json({ data: quizRooms[i] });
     }
-  }
+  }  
 };
+    
