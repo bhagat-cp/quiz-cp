@@ -1,5 +1,5 @@
-// const BASE_URL = `https://quiz-cp.herokuapp.com`;
-const BASE_URL = `http://localhost:5000`;
+const BASE_URL = `https://quiz-cp.herokuapp.com`;
+// const BASE_URL = `http://localhost:5000`;
 
 let chatMode = "default";
 let QUESTION;
@@ -400,42 +400,70 @@ const displayCharts = () => {
     console.log(prop);
     console.log(chartData[prop]);
     const node = document.querySelector(`#myChart-${c}`);
-    console.log(node);
-
+    node.parentNode.style.height = '300px';
+    node.parentNode.style.width = '300px';
+    node.parentNode.style.margin = 'auto';
     const labels = chartData[`q${c}`].names;
     const scores = chartData[`q${c}`].scores;
+    let correctScores = 0;
+    chartData[`q${c}`].scores.map(s => {
+      if(s == 1) {
+        correctScores++
+      }
+    })
     const length = labels.length;
+    const correctPercent = Math.round((correctScores/length)*100);
+    const wrongPercent = length - correctScores;
+
     const bgColors = [];
     const borderColors = [];
     for (let i = 0; i < length; i++) {
-      const r = randomNumGenerate(0, 255);
-      const g = randomNumGenerate(0, 255);
-      const b = randomNumGenerate(0, 255);
+      const r = randomNumGenerate(100, 255);
+      const g = randomNumGenerate(100, 255);
+      const b = randomNumGenerate(100, 255);
       bgColors.push(`rgba(${r}, ${g}, ${b}, 0.2)`);
-      borderColors.push(`rgba(${r}, ${g}, ${b}, 1)`);
+      // borderColors.push(`rgba(${r}, ${g}, ${b}, 1)`);
     }
     c++;
+    // new Chart(node, {
+    //   type: "bar",
+    //   data: {
+    //     labels: [...labels],
+    //     datasets: [
+    //       {
+    //         label: "# Scores",
+    //         data: [...scores],
+    //         backgroundColor: [...bgColors],
+    //         borderColor: [...borderColors],
+    //         borderWidth: 1,
+    //       },
+    //     ],
+    //   },
+    //   options: {
+    //     scales: {
+    //       y: {
+    //         beginAtZero: true,
+    //       },
+    //     },
+    //   },
+    // });
+
     new Chart(node, {
-      type: "bar",
+      type: "pie",
       data: {
-        labels: [...labels],
+        labels: ["Correct", "Wrong"],
         datasets: [
           {
-            label: "# Scores",
-            data: [...scores],
-            backgroundColor: [...bgColors],
-            borderColor: [...borderColors],
-            borderWidth: 1,
+            label: "Students Perform",
+            data: [correctScores, wrongPercent],
+            backgroundColor: [
+              ...bgColors
+            ],
+            hoverOffset: 4,
           },
         ],
       },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
+      
     });
   }
 };
@@ -476,7 +504,7 @@ const displayEachQuestionTable = (res, index) => {
     }
 
     let tr = `
-    <tr>
+    <tr class="each-question-tbody">
       <td class="table-col-padding">${index + 1}</td>
       <td class="table-col-padding">
         <i class="fas fa-award"></i> ${answer?.studentName}
